@@ -170,7 +170,7 @@
         </ul>
     ]]>
     </change-notes>
-    <idea-version since-build="125.57"/>
+    <idea-version since-build="138.1"/>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.css</depends>
     <depends optional="true">org.jetbrains.plugins.less</depends>
