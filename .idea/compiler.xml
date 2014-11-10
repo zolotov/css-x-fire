@@ -21,7 +21,11 @@
       <entry name="?*.css" />
       <entry name="*.rdf" />
     </wildcardResourcePatterns>
-    <annotationProcessing enabled="false" useClasspath="true" />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+    </annotationProcessing>
   </component>
   <component name="EclipseCompilerSettings">
     <option name="GENERATE_NO_WARNINGS" value="true" />
@@ -31,4 +35,3 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
   </component>
 </project>
-
