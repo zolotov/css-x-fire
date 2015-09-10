@@ -18,6 +18,7 @@ package com.github.cssxfire;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.PathUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,7 +46,7 @@ public class FirebugChangesBean {
                               @NotNull String property, @NotNull String value, boolean deleted, boolean important) {
         this.media = media;
         this.path = StringUtils.extractPath(url);
-        this.filename = StringUtils.extractFilename(path);
+        this.filename = PathUtil.getFileName(path);
         this.selector = selector;
         this.property = property;
         this.value = value;

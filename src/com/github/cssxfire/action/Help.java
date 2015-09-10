@@ -20,13 +20,9 @@ import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class Help extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        BrowserUtil.launchBrowser("http://localhost:6776/files/about.html");
+        BrowserUtil.browse("http://localhost:6776/files/about.html");
     }
 }

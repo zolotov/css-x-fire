@@ -20,10 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public interface ReduceStrategy<T> {
-    public void reduce(@NotNull Collection<T> candidates);
+    void reduce(@NotNull Collection<T> candidates);
 }

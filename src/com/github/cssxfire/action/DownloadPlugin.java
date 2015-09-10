@@ -16,16 +16,12 @@
 
 package com.github.cssxfire.action;
 
+import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.ide.BrowserUtil;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class DownloadPlugin extends AnAction {
     public void actionPerformed(AnActionEvent e) {
-        BrowserUtil.launchBrowser("http://localhost:6776/files/cssxfire.xpi");
+        BrowserUtil.browse("http://localhost:6776/files/cssxfire.xpi");
     }
 }

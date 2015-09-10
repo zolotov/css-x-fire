@@ -180,7 +180,7 @@
         </ul>
     ]]>
     </change-notes>
-    <idea-version since-build="138.1"/>
+    <idea-version since-build="141.1532" until-build="141.9999"/>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.css</depends>
     <depends optional="true">org.jetbrains.plugins.less</depends>
@@ -348,6 +348,7 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable id="com.github.cssxfire.ProjectSettingsConfigurable" implementation="com.github.cssxfire.ProjectSettingsConfigurable"/>
+        <projectConfigurable id="com.github.cssxfire.ProjectSettingsConfigurable" nonDefaultProject="true" 
+                             instance="com.github.cssxfire.ProjectSettingsConfigurable"/>
     </extensions>
 </idea-plugin>

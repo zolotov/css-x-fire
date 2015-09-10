@@ -16,10 +16,6 @@
 
 package com.github.cssxfire.tree;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public interface Navigatable {
-    public void navigate();
+  void navigate();
 }

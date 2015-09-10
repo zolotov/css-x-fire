@@ -18,7 +18,7 @@ package com.github.cssxfire.tree;
 
 import com.github.cssxfire.CssUtils;
 import com.github.cssxfire.StringUtils;
-import com.github.cssxfire.ui.Icons;
+import com.intellij.icons.AllIcons;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -29,12 +29,7 @@ import com.intellij.psi.css.CssMediumList;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssSelectorNode extends CssTreeNode implements Navigatable {
     @NotNull
     private final String selector;
@@ -55,12 +50,12 @@ public class CssSelectorNode extends CssTreeNode implements Navigatable {
     @Override
     public Icon getIcon() {
         if (selector.startsWith(".")) {
-            return Icons.CSS_CLASS;
+            return AllIcons.Xml.Css_class;
         }
         if (selector.startsWith("#")) {
-            return Icons.CSS_ID;
+            return AllIcons.Xml.Html_id;
         }
-        return Icons.CSS_HTML_TAG;
+        return AllIcons.Nodes.Tag;
     }
 
     @Override

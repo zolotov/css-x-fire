@@ -17,12 +17,11 @@
 package com.github.cssxfire;
 
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.NonDefaultProjectConfigurable;
 import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileFilter;
+import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.tree.AbstractFileTreeTable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +40,7 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: Ronnie
  */
-public class ProjectSettingsConfigurable implements SearchableConfigurable, NonDefaultProjectConfigurable {
+public class ProjectSettingsConfigurable implements SearchableConfigurable {
     public static ProjectSettingsConfigurable getInstance(final Project project) {
         return new ProjectSettingsConfigurable(project);
     }
@@ -63,6 +62,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         myProject = project;
     }
 
+    @NotNull
     public String getId() {
         return getClass().getName();
     }
@@ -79,12 +79,12 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         routesScrollPane.setViewportView(routesTable);
 
         routesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
+            public void valueChanged(@NotNull ListSelectionEvent e) {
                 updateWebRootButton();
             }
         });
         buttonSetRoot.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(@NotNull ActionEvent e) {
                 updateWebRoot();
             }
         });
@@ -167,7 +167,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
     }
 
     public void disposeUIResources() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        
     }
 
     @Nls
@@ -175,16 +175,12 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable, NonD
         return "CSS-X-Fire";
     }
 
-    public Icon getIcon() {
-        return null;
-    }
-
     public String getHelpTopic() {
         return null;
     }
 
     private void createUIComponents() {
-        routesScrollPane = new MyScrollPane(new JTable());
+        routesScrollPane = new MyScrollPane(new JBTable());
     }
 
     private class FileTreeTable extends AbstractFileTreeTable<String> {

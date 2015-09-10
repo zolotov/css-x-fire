@@ -50,11 +50,6 @@ public class StringUtils {
         return path;
     }
 
-    @NotNull
-    public static String extractFilename(@NotNull String path) {
-        return path.substring(path.lastIndexOf('/') + 1);
-    }
-
     public static boolean equalsNormalizeWhitespace(@Nullable String s1, @Nullable String s2) {
         if (s1 == null && s2 == null) {
             return true;
@@ -122,10 +117,5 @@ public class StringUtils {
         System.out.println(normalizeWhitespace(" .cool a,  a:link  "));
         System.out.println(normalizeWhitespace(" .cool a,\na:link  "));
         System.out.println(normalizeWhitespace(" .cool a,\n  a:link  "));
-
-        System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css?1287337838"));
-        System.out.println(extractFilename("message_feed_packaged.css?1287337838"));
-        System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css"));
-        System.out.println(extractFilename("https://assets3.yammer.com/stylesheets/message_feed_packaged.css/"));
     }
 }

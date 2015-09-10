@@ -16,24 +16,20 @@
 
 package com.github.cssxfire.tree;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public interface TreeViewModel {
-    public boolean canSelect(int direction);
+  boolean canSelect(int direction);
 
-    public void select(int direction);
+  void select(int direction);
 
-    public void applyPending();
+  void applyPending();
 
-    public void applySelectedNode();
+  void applySelectedNode();
 
-    public void deleteSelectedNode();
+  void deleteSelectedNode();
 
-    public void collapseAll();
+  void collapseAll();
 
-    public void expandAll();
+  void expandAll();
 
-    public void clearTree();
+  void clearTree();
 }

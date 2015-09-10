@@ -26,6 +26,7 @@ import com.intellij.psi.css.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiElementProcessor;
+import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +61,6 @@ public class IncomingChangesProcessor {
 
     private Collection<CssDeclarationPath> getCandidates() {
         final List<CssDeclarationPath> candidates = new ArrayList<CssDeclarationPath>();
-
         // find possible media query targets with its own processor
         Set<CssMediumList> mediaCandidates = findCandidateMediaLists();
 
@@ -179,7 +179,7 @@ public class IncomingChangesProcessor {
         CssFileNode fileNode = new CssFileNode(file);
         PsiDirectory directory = file.getParent();
         if (directory == null || !directory.isValid()) {
-            LOG.warn("Invalid directory for new path: " + (directory == null ? directory : directory.getVirtualFile().getUrl()));
+            LOG.warn("Invalid directory for new path: " + (directory == null ? "null" : directory.getVirtualFile().getUrl()));
             return null;
         }
         return new CssDeclarationPath(new CssDirectoryNode(directory), fileNode, selectorNode, declarationNode);
@@ -213,11 +213,10 @@ public class IncomingChangesProcessor {
      */
     @NotNull
     private Set<PsiFile> findCandidateFiles() {
-        final Set<PsiFile> files = new HashSet<PsiFile>();
-        if (changesBean.getFilename().length() > 0) {
-            files.addAll(Arrays.asList(FilenameIndex.getFilesByName(project, changesBean.getFilename(), GlobalSearchScope.projectScope(project))));
+        if (changesBean.getFilename().isEmpty()) {
+            return Collections.emptySet();
         }
-        return files;
+        return ContainerUtil.newHashSet(FilenameIndex.getFilesByName(project, changesBean.getFilename(), GlobalSearchScope.projectScope(project)));
     }
 
     /**

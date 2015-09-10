@@ -30,9 +30,6 @@ import java.util.List;
 /**
  * <p>Reduces the candidates down to the elements which are in files currently opened in editor(s).
  * If the collection is empty this reducer does nothing.
- * <p><p>
- * Created by IntelliJ IDEA.
- * User: Ronnie
  */
 public class CurrentDocumentsReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
     private static final Logger LOG = Logger.getInstance(CurrentDocumentsReduceStrategy.class.getName());
@@ -58,7 +55,7 @@ public class CurrentDocumentsReduceStrategy implements ReduceStrategy<CssDeclara
         for (CssDeclarationPath candidate : candidates) {
             VirtualFile candidateFile = candidate.getFileNode().getVirtualFile();
             for (VirtualFile openFile : openFiles) {
-                if (candidateFile == openFile) {
+                if (candidateFile != null && candidateFile.equals(openFile)) {
                     // this candidate is is a currently opened file
                     matches.add(candidate);
                 }

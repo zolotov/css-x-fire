@@ -16,26 +16,20 @@
 
 package com.github.cssxfire.ui;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
 
 import javax.swing.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public interface Icons {
-    public static final Icon FIREFOX_16 = IconLoader.findIcon("/com/github/cssxfire/images/firefox16.png");
-    public static final Icon FIREBUG_16 = IconLoader.findIcon("/com/github/cssxfire/images/firebug16.png");
-    public static final Icon TRASHCAN = IconLoader.findIcon("/com/github/cssxfire/images/gc.png");
-    public static final Icon COMMIT = IconLoader.findIcon("/com/github/cssxfire/images/commit.png");
-    public static final Icon CSS_CLASS = IconLoader.findIcon("/com/github/cssxfire/images/css_class.png");
-    public static final Icon CSS_ID = IconLoader.findIcon("/com/github/cssxfire/images/html_id.png");
-    public static final Icon CSS_HTML_TAG = IconLoader.findIcon("/com/github/cssxfire/images/tag.png");
-    public static final Icon UP = IconLoader.findIcon("/com/github/cssxfire/images/up.png");
-    public static final Icon DOWN = IconLoader.findIcon("/com/github/cssxfire/images/down.png");
-    public static final Icon EXPAND_ALL = IconLoader.findIcon("/com/github/cssxfire/images/expandall.png");
-    public static final Icon COLLAPSE_ALL = IconLoader.findIcon("/com/github/cssxfire/images/collapseall.png");
-    public static final Icon HELP = IconLoader.findIcon("/com/github/cssxfire/images/help.png");
-    public static final Icon SETTINGS = IconLoader.findIcon("/com/github/cssxfire/images/applicationSettings.png");
+  Icon FIREFOX_16 = AllIcons.Xml.Browsers.Firefox16;
+  Icon FIREBUG_16 = IconLoader.findIcon("/com/github/cssxfire/images/firebug16.png");
+  Icon TRASHCAN = IconLoader.findIcon("/com/github/cssxfire/images/gc.png");
+  Icon COMMIT = IconLoader.findIcon("/com/github/cssxfire/images/commit.png");
+  Icon UP = IconLoader.findIcon("/com/github/cssxfire/images/up.png");
+  Icon DOWN = IconLoader.findIcon("/com/github/cssxfire/images/down.png");
+  Icon EXPAND_ALL = IconLoader.findIcon("/com/github/cssxfire/images/expandall.png");
+  Icon COLLAPSE_ALL = IconLoader.findIcon("/com/github/cssxfire/images/collapseall.png");
+  Icon HELP = IconLoader.findIcon("/com/github/cssxfire/images/help.png");
+  Icon SETTINGS = IconLoader.findIcon("/com/github/cssxfire/images/applicationSettings.png");
 }

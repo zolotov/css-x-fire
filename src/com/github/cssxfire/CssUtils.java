@@ -17,7 +17,6 @@
 package com.github.cssxfire;
 
 import com.github.cssxfire.resolve.GotoDeclarationResolver;
-import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
 import com.intellij.openapi.components.ServiceManager;
@@ -39,13 +38,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssUtils {
     /**
-     * See {@link #isDynamicCssLanguage(com.intellij.psi.PsiElement)}
+     * See {@link #isDynamicCssLanguage(PsiElement)}
      */
     private static final Collection<FileType> DYNAMIC_CSS_FILETYPES = Arrays.asList(
             FileTypeManager.getInstance().getStdFileType("LESS"),
@@ -57,44 +52,30 @@ public class CssUtils {
         CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
         String text = selector + " {" + property + ":" + value + (important ? " !important" : "") + ";}\n";
         PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, text);
-        return findFirstChildOfType(dummyFile, CssDeclaration.class);
+        return PsiTreeUtil.findChildOfType(dummyFile, CssDeclaration.class);
     }
 
     public static CssRuleset createRuleset(Project project, String selector) {
         CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
         PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, selector + " {\n\n}\n");
-        return findFirstChildOfType(dummyFile, CssRuleset.class);
+        return PsiTreeUtil.findChildOfType(dummyFile, CssRuleset.class);
     }
 
     public static CssTerm createTerm(Project project, String value) {
-        return findFirstChildOfType(createTermList(project, value), CssTerm.class);
+        return PsiTreeUtil.findChildOfType(createTermList(project, value), CssTerm.class);
     }
 
     public static CssTermList createTermList(Project project, String value) {
         CSSLanguage cssLanguage = Language.findInstance(CSSLanguage.class);
         PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.css", cssLanguage, ".foo { color: " + value + " }");
-        return findFirstChildOfType(dummyFile, CssTermList.class);
-    }
-
-    private static <T extends PsiElement> T findFirstChildOfType(@NotNull PsiElement element, Class<T> type) {
-        PsiElement[] children = element.getChildren();
-        for (PsiElement child : children) {
-            if (type.isAssignableFrom(child.getClass())) {
-                return (T) child;
-            }
-            T t = findFirstChildOfType(child, type);
-            if (t != null) {
-                return (T) t;
-            }
-        }
-        return null;
+        return PsiTreeUtil.findChildOfType(dummyFile, CssTermList.class);
     }
 
     @Nullable
     public static CssRulesetList findFirstCssRulesetList(@NotNull PsiFile file) {
         final Ref<CssRulesetList> ref = new Ref<CssRulesetList>();
         PsiTreeUtil.processElements(file, new PsiElementProcessor() {
-            public boolean execute(PsiElement element) {
+            public boolean execute(@NotNull PsiElement element) {
                 if (element instanceof CssRulesetList) {
                     ref.set((CssRulesetList) element);
                     return false;
@@ -125,12 +106,12 @@ public class CssUtils {
 
     @Nullable
     public static PsiElement resolveVariableAssignment(@NotNull CssDeclaration cssDeclaration) {
-        CssTermList termList = PsiTreeUtil.getChildOfType(cssDeclaration, CssTermList.class);
+        CssTermList termList = cssDeclaration.getValue();
         if (termList == null) {
             return null;
         }
-        CssTerm[] terms = PsiTreeUtil.getChildrenOfType(termList, CssTerm.class);
-        if (terms == null || terms.length != 1) {
+        CssTerm[] terms = termList.getTerms();
+        if (terms.length != 1) {
             return null; // not an explicit variable reference
         }
 
@@ -193,15 +174,7 @@ public class CssUtils {
 
     @Nullable
     public static CssMediumList findMediumList(@Nullable PsiElement element) {
-        while (element != null) {
-            ASTNode node = element.getNode();
-            if (node != null) {
-                if ("CSS_MEDIA".equals(node.getElementType().toString())) {
-                    return PsiTreeUtil.getChildOfType(element, CssMediumList.class);
-                }
-            }
-            element = element.getParent();
-        }
-        return null;
+        CssMedia media = PsiTreeUtil.getNonStrictParentOfType(element, CssMedia.class);
+        return media != null ? media.getMediumList() : null;
     }
 }

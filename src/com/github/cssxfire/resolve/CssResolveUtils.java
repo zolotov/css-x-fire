@@ -45,10 +45,6 @@ import java.util.HashSet;
  *     </ol>
  *     As soon as the declaration is found the processing is stopped.
  * </p>
- * <p>
- * Created by IntelliJ IDEA.
- * User: Ronnie
- * </p>
  */
 public class CssResolveUtils {
     private static final Key<Collection<String>> PROCESSED_PATHS = new Key<Collection<String>>("PROCESSED_PATHS");
@@ -59,10 +55,7 @@ public class CssResolveUtils {
      * @return <tt>true</tt> if there is at least one error element in the given tree
      */
     public static boolean containsErrors(@Nullable PsiElement root) {
-        if (root == null) {
-            return false;
-        }
-        return PsiTreeUtil.findChildOfType(root, PsiErrorElement.class) != null;
+        return root != null && PsiTreeUtil.findChildOfType(root, PsiErrorElement.class) != null;
     }
 
     @Nullable
@@ -107,7 +100,7 @@ public class CssResolveUtils {
 
         // Recurse on files importing this file
         CssUtils.getPsiSearchHelper(file.getProject()).processElementsWithWord(new TextOccurenceProcessor() {
-            public boolean execute(PsiElement element, int offsetInElement) {
+            public boolean execute(@NotNull PsiElement element, int offsetInElement) {
                 if (element.getParent().getParent() instanceof CssImport) {
                     CssImport cssImport = (CssImport) element.getParent().getParent();
                     String[] uris = cssImport.getUriStrings();
@@ -148,10 +141,7 @@ public class CssResolveUtils {
                 return false;
             }
             VirtualFile virtualFile = file.getVirtualFile();
-            if (virtualFile != null && paths.add(virtualFile.getPath())) {
-                return true;
-            }
-            return false;
+            return virtualFile != null && paths.add(virtualFile.getPath());
         }
     }
 }

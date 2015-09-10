@@ -19,7 +19,6 @@ package com.github.cssxfire;
 import com.github.cssxfire.webserver.SimpleWebServer;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ApplicationNamesInfo;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
@@ -30,10 +29,6 @@ import java.net.BindException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 @State(
         name = "CssXFireConnector",
         storages = {@Storage(id = "CSS-X-Fire", file = StoragePathMacros.APP_CONFIG + "/CSS-X-Fire.xml")}

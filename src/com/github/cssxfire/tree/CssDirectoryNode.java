@@ -27,12 +27,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssDirectoryNode extends CssTreeNode {
-    private final PsiDirectory directory;
+    @NotNull  private final PsiDirectory directory;
 
     public CssDirectoryNode(@NotNull PsiDirectory directory) {
         this.directory = directory;
@@ -74,13 +70,12 @@ public class CssDirectoryNode extends CssTreeNode {
 
         CssDirectoryNode that = (CssDirectoryNode) o;
 
-        if (directory != null ? !directory.equals(that.directory) : that.directory != null) return false;
+        return directory.equals(that.directory);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        return directory != null ? directory.hashCode() : 0;
+        return directory.hashCode();
     }
 }

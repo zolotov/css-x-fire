@@ -16,7 +16,7 @@
 
 package com.github.cssxfire;
 
-import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.*;
 import com.intellij.psi.search.PsiElementProcessor;
@@ -24,14 +24,12 @@ import com.intellij.psi.search.TextOccurenceProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
-    private static final Logger LOG = Logger.getInstance(CssSelectorSearchProcessor.class.getName());
     private static final String DUMMY = "";
 
     private final List<CssElement> selectors = new ArrayList<CssElement>();
@@ -65,7 +63,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
         return selector;
     }
 
-    public boolean execute(PsiElement psiElement, int i) {
+    public boolean execute(@NotNull PsiElement psiElement, int i) {
         if (psiElement instanceof CssSelector || psiElement instanceof CssSelectorList) {
             CssElement cssSelector = (CssElement) psiElement;
             if ((!(cssSelector.getParent() instanceof CssSelectorList)) && canBeReference(cssSelector)) {
@@ -88,7 +86,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
         final List<List<String>> selectorPaths = createSelectorParts(selector);
 
         boolean complete = CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>() {
-            public boolean execute(PsiElement element) {
+            public boolean execute(@NotNull PsiElement element) {
                 if (element instanceof CssRuleset) {
                     CssRuleset cssRuleset = (CssRuleset) element;
                     CssSelectorList selectorList = cssRuleset.getSelectorList();
@@ -120,7 +118,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
 
                     for (List<String> selectorPath : selectorPaths) {
                         String stack = pop(selectorPath);// Clear dummy markers
-                        if (!"".equals(stack)) {
+                        if (StringUtil.isNotEmpty(stack)) {
                             selectorPath.add(DUMMY);
                             return false;
                         }
@@ -146,7 +144,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
      * @return <tt>true</tt> if <tt>match</tt> is a tailing sublist of <tt>candidate</tt>,
      *         given the semantics of <tt>comparator</tt>
      */
-    private boolean endsWith(List<String> candidate, List<String> match) {
+    private static boolean endsWith(List<String> candidate, List<String> match) {
         if (candidate.isEmpty() || match.isEmpty() || match.size() > candidate.size()) {
             return false;
         }
@@ -173,22 +171,20 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
      * @param strings the list to pop
      * @return the removed element, or <tt>null</tt> if the list is empty
      */
-    private String pop(List<String> strings) {
+    private static String pop(List<String> strings) {
         if (!strings.isEmpty()) {
             return strings.remove(strings.size() - 1);
         }
         return null;
     }
 
-    private List<List<String>> createSelectorParts(String s) {
+    private static List<List<String>> createSelectorParts(String s) {
         List<List<String>> parts = new ArrayList<List<String>>();
         String[] selectorParts = s.split(",");
         for (String part : selectorParts) {
             List<String> sub = new ArrayList<String>();
             String[] subParts = part.split(" ");
-            for (String subPart : subParts) {
-                sub.add(subPart);
-            }
+            Collections.addAll(sub, subParts);
             parts.add(sub);
         }
         return parts;
@@ -200,7 +196,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
      * @param parts the list to clean
      * @return true if there was any strings left
      */
-    private boolean cleanupSelectorParts(List<List<String>> parts) {
+    private static boolean cleanupSelectorParts(List<List<String>> parts) {
         boolean leftovers = false;
         for (List<String> part : parts) {
             if (!part.isEmpty()) {
@@ -210,15 +206,6 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
         }
         parts.clear();
         return leftovers;
-    }
-
-    /**
-     * Get the number of hits this processor has collected
-     *
-     * @return the number of collected elements
-     */
-    public int size() {
-        return selectors.size();
     }
 
     /**
