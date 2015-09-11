@@ -27,10 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssFileNode extends CssTreeNode implements Navigatable {
     private final PsiFile psiFile;
 

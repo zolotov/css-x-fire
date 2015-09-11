@@ -36,10 +36,6 @@ import com.intellij.util.ui.EmptyIcon;
 
 import javax.swing.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssDeclarationNode extends CssTreeNode implements Navigatable {
     protected final CssDeclaration cssDeclaration;
     protected final String value;

@@ -16,10 +16,6 @@
 
 package com.github.cssxfire.tree;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssDeclarationPath {
     private final CssTreeNode[] treeNodes;
 

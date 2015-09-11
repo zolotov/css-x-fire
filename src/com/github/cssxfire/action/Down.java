@@ -16,10 +16,6 @@
 
 package com.github.cssxfire.action;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class Down extends Navigate {
     @Override
     protected int getDirection() {

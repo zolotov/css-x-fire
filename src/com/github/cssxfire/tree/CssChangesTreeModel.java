@@ -27,10 +27,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssChangesTreeModel extends DefaultTreeModel {
     private static final TreeCellRenderer myTreeCellRenderer = new MyTreeCellRenderer();
 

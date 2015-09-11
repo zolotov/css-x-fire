@@ -22,10 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.TreeNode;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public abstract class CssNewDeclarationNode extends CssDeclarationNode {
     @NotNull
     protected final CssElement destinationBlock;

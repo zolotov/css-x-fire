@@ -42,10 +42,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssToolWindow extends JPanel implements TreeModelListener, TreeViewModel {
     private final CssChangesTreeModel treeModel;
     private final JTree tree;

@@ -32,10 +32,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class IncomingChangesProcessor {
     private static final Logger LOG = Logger.getInstance(IncomingChangesProcessor.class.getName());
 

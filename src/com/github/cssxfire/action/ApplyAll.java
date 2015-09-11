@@ -19,10 +19,6 @@ package com.github.cssxfire.action;
 import com.github.cssxfire.IncomingChangesComponent;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class ApplyAll extends AbstractIncomingChangesAction {
     public static final String ID = ApplyAll.class.getName();
 

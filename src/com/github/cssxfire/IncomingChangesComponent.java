@@ -43,10 +43,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class IncomingChangesComponent implements ProjectComponent {
     public static final String TOOLWINDOW_ID = "CSS-X-Fire";
 

@@ -23,10 +23,6 @@ import com.intellij.openapi.vcs.FileStatus;
 
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class Colors {
 
     public static Color getModified() {

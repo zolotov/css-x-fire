@@ -21,10 +21,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class TreeUtils {
     /**
      * Find the declaration node which either preceeds or follows the given anchor.

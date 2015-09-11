@@ -27,10 +27,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public abstract class CssResolveProcessor implements PsiElementProcessor {
     protected final String name;
     protected final Ref<PsiElement> result = new Ref<PsiElement>(null);

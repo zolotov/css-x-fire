@@ -24,10 +24,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public abstract class CssTreeNode extends DefaultMutableTreeNode {
     @Nullable
     public abstract Icon getIcon();

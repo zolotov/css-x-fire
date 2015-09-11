@@ -21,10 +21,6 @@ import com.intellij.psi.css.CssDeclaration;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssNewDeclarationForBlockNode extends CssNewDeclarationNode {
     public CssNewDeclarationForBlockNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssBlock destinationBlock, boolean deleted) {
         super(cssDeclaration, destinationBlock, deleted);

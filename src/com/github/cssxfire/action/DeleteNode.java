@@ -19,10 +19,6 @@ package com.github.cssxfire.action;
 import com.github.cssxfire.IncomingChangesComponent;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class DeleteNode extends AbstractIncomingChangesAction {
     @Override
     public void actionPerformed(AnActionEvent event) {

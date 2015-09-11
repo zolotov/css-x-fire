@@ -23,10 +23,6 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class ShowSettings extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent event) {

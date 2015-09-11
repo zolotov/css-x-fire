@@ -28,10 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class ReduceStrategyManager {
     private static final Logger LOG = Logger.getInstance(ReduceStrategyManager.class.getName());
 

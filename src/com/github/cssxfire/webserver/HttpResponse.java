@@ -18,10 +18,6 @@ package com.github.cssxfire.webserver;
 
 import java.io.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class HttpResponse {
     private static final String CRLF = "\r\n";
     private static final String CONTENT_TYPE_TEXT_PLAIN = "Content-Type: text/plain; charset=utf-8";

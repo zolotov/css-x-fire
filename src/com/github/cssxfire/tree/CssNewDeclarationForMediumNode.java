@@ -22,10 +22,6 @@ import com.intellij.psi.css.*;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode {
     protected CssNewDeclarationForMediumNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssMediumList destinationElement, boolean deleted) {
         super(cssDeclaration, destinationElement, deleted);

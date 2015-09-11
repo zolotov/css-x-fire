@@ -36,10 +36,6 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class ProjectSettingsConfigurable implements SearchableConfigurable {
     public static ProjectSettingsConfigurable getInstance(final Project project) {
         return new ProjectSettingsConfigurable(project);

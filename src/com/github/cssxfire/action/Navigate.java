@@ -19,10 +19,6 @@ package com.github.cssxfire.action;
 import com.github.cssxfire.IncomingChangesComponent;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public abstract class Navigate extends AbstractIncomingChangesAction {
     /**
      * For subclasses to implement. A positive value means forward (next) and a negative

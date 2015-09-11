@@ -24,10 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssMediaSearchProcessor implements TextOccurenceProcessor {
     private final Set<CssMediumList> mediaLists = new HashSet<CssMediumList>();
     @NotNull

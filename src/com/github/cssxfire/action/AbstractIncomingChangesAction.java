@@ -23,10 +23,6 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public abstract class AbstractIncomingChangesAction extends AnAction {
     @Nullable
     protected IncomingChangesComponent getIncomingChangesComponent(AnActionEvent event) {

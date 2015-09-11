@@ -24,10 +24,6 @@ import java.io.CharArrayWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class StringUtils {
     private static final Logger LOG = Logger.getInstance(StringUtils.class.getName());
 

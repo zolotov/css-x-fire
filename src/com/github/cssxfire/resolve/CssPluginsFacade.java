@@ -25,10 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssPluginsFacade {
     private static final FileType LESS_FILE_TYPE = FileTypeManager.getInstance().getStdFileType("LESS");
     private static final FileType SASS_FILE_TYPE = FileTypeManager.getInstance().getStdFileType("SASS");

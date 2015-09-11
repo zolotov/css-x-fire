@@ -21,10 +21,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class RoutePerFileMappings {
     private Map<VirtualFile, String> myMappings = new HashMap<VirtualFile, String>();
 

@@ -22,10 +22,6 @@ import com.intellij.psi.css.*;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssNewDeclarationForRulesetListNode extends CssNewDeclarationNode {
     protected CssNewDeclarationForRulesetListNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssRulesetList destinationElement, boolean deleted) {
         super(cssDeclaration, destinationElement, deleted);

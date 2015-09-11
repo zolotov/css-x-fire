@@ -26,10 +26,6 @@ import com.intellij.util.ui.EmptyIcon;
 
 import javax.swing.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class CssRootNode extends CssTreeNode {
     private final Project project;
 
