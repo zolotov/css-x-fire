@@ -91,6 +91,7 @@ public class TreeUtils {
             this.leafIterator = new LeafIterator(root);
         }
 
+        @NotNull
         public Iterator<CssTreeNode> iterator() {
             return leafIterator;
         }

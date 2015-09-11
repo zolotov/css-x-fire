@@ -147,7 +147,7 @@ public class IncomingChangesProcessor {
         CssFileNode fileNode = new CssFileNode(file);
         PsiDirectory directory = file.getParent();
         if (directory == null || !directory.isValid()) {
-            LOG.warn("Invalid directory for existing path: " + (directory == null ? directory : directory.getVirtualFile().getUrl()));
+            LOG.warn("Invalid directory for existing path: " + (directory == null ? "null" : directory.getVirtualFile().getUrl()));
             return null;
         }
         return new CssDeclarationPath(new CssDirectoryNode(directory), fileNode, selectorNode, declarationNode);
@@ -222,7 +222,7 @@ public class IncomingChangesProcessor {
      * @param object     the object to remove
      * @param <T>        the type of collection
      */
-    private <T> void deleteCandidate(@NotNull Collection<T> collection, @Nullable T object) {
+    private static <T> void deleteCandidate(@NotNull Collection<T> collection, @Nullable T object) {
         if (object != null) {
             collection.remove(object);
         }

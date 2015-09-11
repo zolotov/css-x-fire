@@ -28,6 +28,8 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
+import com.intellij.ui.components.JBScrollPane;
+import com.intellij.ui.treeStructure.Tree;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,7 +64,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
 
         JPanel incomingChangesPanel = new JPanel(new BorderLayout(5, 5));
 
-        tree = new JTree(treeModel);
+        tree = new Tree(treeModel);
         tree.setBorder(new EmptyBorder(3, 3, 3, 3));
         // tree.setRootVisible(false);
         tree.setCellRenderer(treeModel.getTreeCellRenderer());
@@ -70,7 +72,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
 
         tree.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(@NotNull MouseEvent e) {
                 if ((e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1)
                         || (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON2)) {
                     TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
@@ -84,7 +86,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         });
         tree.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyPressed(@NotNull KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     TreePath path = tree.getSelectionPath();
                     navigateTo(path);
@@ -92,7 +94,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
             }
         });
 
-        JScrollPane scrollPane = new JScrollPane(tree);
+        JScrollPane scrollPane = new JBScrollPane(tree);
 
         incomingChangesPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -100,7 +102,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         clearButton = new JButton(clearAllPresentation.getText(), clearAllPresentation.getIcon());
         clearButton.setEnabled(false);
         clearButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(@NotNull ActionEvent e) {
                 ActionManager.getInstance().getAction(ClearAll.ID).actionPerformed(createAnActionEvent(ClearAll.ID));
             }
         });
@@ -108,7 +110,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         applyButton = new JButton(applyAllPresentation.getText(), applyAllPresentation.getIcon());
         applyButton.setEnabled(false);
         applyButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(@NotNull ActionEvent e) {
                 ActionManager.getInstance().getAction(ApplyAll.ID).actionPerformed(createAnActionEvent(ApplyAll.ID));
             }
         });
@@ -133,7 +135,7 @@ public class CssToolWindow extends JPanel implements TreeModelListener, TreeView
         return treeModel;
     }
 
-    private void navigateTo(@Nullable TreePath path) {
+    private static void navigateTo(@Nullable TreePath path) {
         if (path != null) {
             Object source = path.getLastPathComponent();
             if (source instanceof Navigatable) {
