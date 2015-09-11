@@ -141,7 +141,7 @@ public class CssUtils {
                 }
             }
         }
-        if (isDynamicCssLanguage(block) && ProjectSettings.getInstance(block.getProject()).isResolveMixins()) {
+        if (isDynamicCssLanguage(block) && CssXFireSettings.getInstance(block.getProject()).isResolveMixins()) {
             return PsiTreeUtil.processElements(block, new PsiElementProcessor() {
                 public boolean execute(@NotNull PsiElement element) {
                     PsiElement[] targets = GotoDeclarationResolver.INSTANCE.getGotoDeclarationTargets(element, null);

@@ -32,7 +32,10 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiTreeChangeAdapter;
+import com.intellij.psi.PsiTreeChangeEvent;
+import com.intellij.psi.PsiTreeChangeListener;
 import com.intellij.psi.css.CssDeclaration;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
@@ -52,12 +55,12 @@ public class IncomingChangesComponent implements ProjectComponent {
 
     private final PsiTreeChangeListener myListener = new PsiTreeChangeAdapter() {
         @Override
-        public void childReplaced(PsiTreeChangeEvent event) {
+        public void childReplaced(@NotNull PsiTreeChangeEvent event) {
             IncomingChangesComponent.this.onPsiChange(event);
         }
 
         @Override
-        public void childRemoved(PsiTreeChangeEvent event) {
+        public void childRemoved(@NotNull PsiTreeChangeEvent event) {
             IncomingChangesComponent.this.onPsiChange(event);
         }
     };
@@ -172,7 +175,7 @@ public class IncomingChangesComponent implements ProjectComponent {
                     cssToolWindow.getTreeModel().intersect(candidate);
                 }
 
-                if (ProjectSettings.getInstance(project).isAutoExpand()) {
+                if (CssXFireSettings.getInstance(project).isAutoExpand()) {
                     cssToolWindow.expandAll();
                 }
             }
@@ -191,7 +194,7 @@ public class IncomingChangesComponent implements ProjectComponent {
                     return;
                 }
 
-                if ("refresh".equals(event.getName()) && ProjectSettings.getInstance(project).isAutoClear()) {
+                if ("refresh".equals(event.getName()) && CssXFireSettings.getInstance(project).isAutoClear()) {
                     cssToolWindow.clearTree();
                 }
             }

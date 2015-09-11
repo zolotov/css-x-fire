@@ -16,38 +16,34 @@
 
 package com.github.cssxfire.action;
 
-import com.github.cssxfire.ProjectSettings;
+import com.github.cssxfire.CssXFireSettings;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class AutoExpand extends ToggleAction {
     @Nullable
-    protected ProjectSettings getProjectSettings(AnActionEvent event) {
-        Project project = LangDataKeys.PROJECT.getData(event.getDataContext());
+    protected CssXFireSettings getProjectSettings(AnActionEvent event) {
+        Project project = CommonDataKeys.PROJECT.getData(event.getDataContext());
         if (project == null) {
             return null;
         }
-        return ProjectSettings.getInstance(project);
+        return CssXFireSettings.getInstance(project);
     }
 
     @Override
     public boolean isSelected(AnActionEvent e) {
-        ProjectSettings projectSettings = getProjectSettings(e);
-        return projectSettings != null && projectSettings.isAutoExpand();
+        CssXFireSettings cssXFireSettings = getProjectSettings(e);
+        return cssXFireSettings != null && cssXFireSettings.isAutoExpand();
     }
 
     @Override
     public void setSelected(AnActionEvent e, boolean state) {
-        ProjectSettings projectSettings = getProjectSettings(e);
-        if (projectSettings != null) {
-            projectSettings.setAutoExpand(state);
+        CssXFireSettings cssXFireSettings = getProjectSettings(e);
+        if (cssXFireSettings != null) {
+            cssXFireSettings.setAutoExpand(state);
         }
     }
 }

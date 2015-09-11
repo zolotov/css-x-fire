@@ -16,8 +16,8 @@
 
 package com.github.cssxfire.filter;
 
+import com.github.cssxfire.CssXFireSettings;
 import com.github.cssxfire.FirebugChangesBean;
-import com.github.cssxfire.ProjectSettings;
 import com.github.cssxfire.tree.CssDeclarationPath;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -36,29 +36,29 @@ public class ReduceStrategyManager {
     private static final Logger LOG = Logger.getInstance(ReduceStrategyManager.class.getName());
 
     /**
-     * Get a filter for (possibly) reducing a collection of {@link com.github.cssxfire.tree.CssDeclarationPath}
+     * Get a filter for (possibly) reducing a collection of {@link CssDeclarationPath}
      * candidates. The filter is based on settings from the toolwindow and/or a given filename and media query.
      *
      * @param project the current project
      * @param bean    the container holding path, media and filename information
-     * @return a suitable {@link com.github.cssxfire.filter.ReduceStrategy}
+     * @return a suitable {@link ReduceStrategy}
      */
     public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull Project project, @NotNull FirebugChangesBean bean) {
         final List<ReduceStrategy<CssDeclarationPath>> reduceChain = new ArrayList<ReduceStrategy<CssDeclarationPath>>();
 
-        if (ProjectSettings.getInstance(project).isMediaReduce()) {
+        if (CssXFireSettings.getInstance(project).isMediaReduce()) {
             // Reduce for @media is checked
             reduceChain.add(new MediaReduceStrategy(bean.getMedia()));
         }
-        if (ProjectSettings.getInstance(project).isFileReduce()) {
+        if (CssXFireSettings.getInstance(project).isFileReduce()) {
             // Reduce for file is checked
             reduceChain.add(new FileReduceStrategy(bean.getFilename()));
         }
-        if (ProjectSettings.getInstance(project).isCurrentDocumentsReduce()) {
+        if (CssXFireSettings.getInstance(project).isCurrentDocumentsReduce()) {
             // Reduce for currently opened files (documents)
             reduceChain.add(new CurrentDocumentsReduceStrategy(project));
         }
-        if (ProjectSettings.getInstance(project).isUseRoutes()) {
+        if (CssXFireSettings.getInstance(project).isUseRoutes()) {
             // Use routes is checked
             VirtualFile projectBaseDir = project.getBaseDir();
             if (projectBaseDir != null) {

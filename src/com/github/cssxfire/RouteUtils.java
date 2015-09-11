@@ -19,15 +19,12 @@ package com.github.cssxfire;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Ronnie
- */
 public class RouteUtils {
     private static final Logger LOG = Logger.getInstance(RouteUtils.class.getName());
     private static final String[] ROOT_MAPPING = new String[]{""};
@@ -42,14 +39,14 @@ public class RouteUtils {
      */
     @Nullable
     public static VirtualFile detectLocalFile(@NotNull final Project project, @NotNull final String filePath) {
-        final RoutePerFileMappings routes = ProjectSettings.getInstance(project).getRoutes();
+        final RoutePerFileMappings routes = CssXFireSettings.getInstance(project).getRoutes();
         String[] parts = filePath.split("/");
         Map<VirtualFile, String> mappings = routes.getMappings();
         if (LOG.isDebugEnabled()) {
             LOG.debug("Detect local file, path: " + filePath + " routes: " + mappings);
         }
 
-        String[] longestMatch = new String[0];
+        String[] longestMatch = ArrayUtil.EMPTY_STRING_ARRAY;
         VirtualFile bestMatch = null;
         String bestRoute = null;
 

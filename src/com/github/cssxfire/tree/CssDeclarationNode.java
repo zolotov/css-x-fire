@@ -17,7 +17,7 @@
 package com.github.cssxfire.tree;
 
 import com.github.cssxfire.CssUtils;
-import com.github.cssxfire.ProjectSettings;
+import com.github.cssxfire.CssXFireSettings;
 import com.github.cssxfire.ui.Colors;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
@@ -131,7 +131,7 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
         if (!isValid()) {
             return null;
         }
-        if (CssUtils.isDynamicCssLanguage(cssDeclaration) && ProjectSettings.getInstance(cssDeclaration.getProject()).isResolveVariables()) {
+        if (CssUtils.isDynamicCssLanguage(cssDeclaration) && CssXFireSettings.getInstance(cssDeclaration.getProject()).isResolveVariables()) {
             PsiElement assignment = CssUtils.resolveVariableAssignment(cssDeclaration);
             if (assignment != null) {
                 //noinspection unchecked

@@ -125,7 +125,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable {
     }
 
     public boolean isModified() {
-        ProjectSettings state = ProjectSettings.getInstance(myProject);
+        CssXFireSettings state = CssXFireSettings.getInstance(myProject);
         return !state.getRoutes().getMappings().equals(routesTable.getValues())
                 || state.isAutoClear() != checkBoxAutoClear.isSelected()
                 || state.isMediaReduce() != checkBoxMediaReduce.isSelected()
@@ -137,7 +137,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable {
     }
 
     public void apply() throws ConfigurationException {
-        ProjectSettings state = ProjectSettings.getInstance(myProject);
+        CssXFireSettings state = CssXFireSettings.getInstance(myProject);
         state.getRoutes().setMappings(routesTable.getValues());
         state.setAutoClear(checkBoxAutoClear.isSelected());
         state.setMediaReduce(checkBoxMediaReduce.isSelected());
@@ -155,7 +155,7 @@ public class ProjectSettingsConfigurable implements SearchableConfigurable {
     }
 
     public void reset() {
-        ProjectSettings state = ProjectSettings.getInstance(myProject);
+        CssXFireSettings state = CssXFireSettings.getInstance(myProject);
         routesTable.reset(state.getRoutes().getMappings());
         checkBoxAutoClear.setSelected(state.isAutoClear());
         checkBoxFileReduce.setSelected(state.isFileReduce());

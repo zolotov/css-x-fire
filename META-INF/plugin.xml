@@ -200,9 +200,6 @@
             <implementation-class>com.github.cssxfire.IncomingChangesComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>com.github.cssxfire.ProjectSettings</implementation-class>
-        </component>
-        <component>
             <implementation-class>com.github.cssxfire.SearchProcessorCache</implementation-class>
         </component>
     </project-components>
@@ -350,8 +347,9 @@
 
     </actions>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable id="com.github.cssxfire.ProjectSettingsConfigurable" nonDefaultProject="true" 
-                             instance="com.github.cssxfire.ProjectSettingsConfigurable"/>
-    </extensions>
+  <extensions defaultExtensionNs="com.intellij">
+    <projectService serviceImplementation="com.github.cssxfire.CssXFireSettings"/>
+    <projectConfigurable id="com.github.cssxfire.ProjectSettingsConfigurable" nonDefaultProject="true" 
+                         instance="com.github.cssxfire.ProjectSettingsConfigurable"/>
+  </extensions>
 </idea-plugin>

@@ -74,7 +74,7 @@ public class FirebugChangesBean {
      * @return a new bean instance
      */
     public FirebugChangesBean applyRoutes(@NotNull Project project) {
-        if (ProjectSettings.getInstance(project).isUseRoutes()) {
+        if (CssXFireSettings.getInstance(project).isUseRoutes()) {
             VirtualFile targetFile = RouteUtils.detectLocalFile(project, path);
             if (targetFile != null) {
                 VirtualFile projectBaseDir = project.getBaseDir();
