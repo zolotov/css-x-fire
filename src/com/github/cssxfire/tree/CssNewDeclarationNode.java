@@ -16,11 +16,13 @@
 
 package com.github.cssxfire.tree;
 
-import com.github.cssxfire.ui.Colors;
+import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.psi.css.*;
+import com.intellij.ui.SimpleTextAttributes;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.TreeNode;
+import java.awt.*;
 
 public abstract class CssNewDeclarationNode extends CssDeclarationNode {
     @NotNull
@@ -67,10 +69,14 @@ public abstract class CssNewDeclarationNode extends CssDeclarationNode {
 
     @Override
     public final String getText() {
-        String text = cssDeclaration.getText();
-        return deleted
-                ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.getAdded() : Colors.getInvalid())
-                : wrapWithHtmlColor(text, isValid() ? Colors.getAdded() : Colors.getInvalid());
+        return cssDeclaration.getText();
+    }
+
+    @NotNull
+    @Override
+    public SimpleTextAttributes getTextAttributes() {
+        Color color = isValid() ? FileStatus.ADDED.getColor() : FileStatus.DELETED.getColor();
+        return super.getTextAttributes().derive(deleted ? SimpleTextAttributes.STYLE_STRIKEOUT : -1, color, null, null);
     }
 
     @Override

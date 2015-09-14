@@ -20,6 +20,7 @@ import com.github.cssxfire.CssXFireConnector;
 import com.github.cssxfire.FirebugChangesBean;
 import com.github.cssxfire.FirebugEvent;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -59,7 +60,7 @@ public class HttpRequest implements Runnable {
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
     try {
       //Get the request line of HTTP message
-      String requestLine = br.readLine().trim();
+      String requestLine = StringUtil.trim(br.readLine());
       String req;
       while ((req = br.readLine()) != null) {
         req = req.trim().toLowerCase(Locale.US);

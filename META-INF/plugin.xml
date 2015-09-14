@@ -205,108 +205,62 @@
     </project-components>
 
     <actions>
-
-        <action id="com.github.cssxfire.action.ApplyAll"
-                class="com.github.cssxfire.action.ApplyAll"
-                text="Apply all changes"
-                description="Applies all pending changes"
-                icon="/com/github/cssxfire/images/commit.png"/>
-        <action id="com.github.cssxfire.action.ClearAll"
-                class="com.github.cssxfire.action.ClearAll"
-                text="Clear list"
-                description="Clears all pending changes"
-                icon="/com/github/cssxfire/images/gc.png"/>
-        <action id="IncomingChanges.DeclarationNodePopup.DeleteSingle"
+       <action id="IncomingChanges.DeclarationNodePopup.DeleteSingle"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove selected change"
                 description="Removes the selected change from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png">
+                icon="AllIcons.ToolbarDecorator.Remove">
             <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySingle"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply selected change"
                 description="Applies the selected change from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png">
+                icon="AllIcons.ToolbarDecorator.Import">
             <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteSelector"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in selector"
                 description="Removes all changes from selected CSS selector from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png">
+                icon="AllIcons.ToolbarDecorator.Remove">
             <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySelector"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in selector"
                 description="Applies all changes from selected CSS selector from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png">
+                icon="AllIcons.ToolbarDecorator.Import">
             <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteFile"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in file"
                 description="Removes all changes from selected file from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png">
+                icon="AllIcons.ToolbarDecorator.Remove">
             <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplyFile"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in file"
                 description="Applies all changes from selected file from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png">
+                icon="AllIcons.ToolbarDecorator.Import">
             <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteDirectory"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in directory"
                 description="Removes all changes from selected directory from the incoming changelist"
-                icon="/com/github/cssxfire/images/delete.png">
+                icon="AllIcons.ToolbarDecorator.Remove">
             <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplyDirectory"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in directory"
                 description="Applies all changes from selected directory from the incoming changelist"
-                icon="/com/github/cssxfire/images/commit.png">
+                icon="AllIcons.ToolbarDecorator.Import">
             <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
         </action>
-        <action id="IncomingChanges.ToolBar.Up"
-                class="com.github.cssxfire.action.Up"
-                text="Previous change"
-                description="Navigate to the previous occurence"
-                icon="/com/github/cssxfire/images/up.png"/>
-        <action id="IncomingChanges.ToolBar.Down"
-                class="com.github.cssxfire.action.Down"
-                text="Next change"
-                description="Navigate to the next occurence"
-                icon="/com/github/cssxfire/images/down.png"/>
-        <action id="IncomingChanges.ToolBar.Help"
-                class="com.github.cssxfire.action.Help"
-                text="Help"
-                description="Show the CSS-X-Fire help page"
-                icon="/com/github/cssxfire/images/help.png"/>
-        <action id="IncomingChanges.ToolBar.AutoExpand"
-                class="com.github.cssxfire.action.AutoExpand"
-                text="Auto Expand"
-                description="Expand entire tree on every incoming change."
-                icon="/com/github/cssxfire/images/autoexpand.png"/>
-        <action id="IncomingChanges.ToolBar.ExpandAll"
-                class="com.github.cssxfire.action.ExpandAll"
-                text="Expand All"
-                description="Expand all elements in the tool window."
-                icon="/com/github/cssxfire/images/expandall.png"/>
-        <action id="IncomingChanges.ToolBar.CollapseAll"
-                class="com.github.cssxfire.action.CollapseAll"
-                text="Collapse All"
-                description="Collapse all elements in the tool window"
-                icon="/com/github/cssxfire/images/collapseall.png"/>
-        <action id="IncomingChanges.ToolBar.ShowSettings"
-                class="com.github.cssxfire.action.ShowSettings"
-                text="Show Settings"
-                description="Edit CSS-X-Fire Settings"
-                icon="/com/github/cssxfire/images/applicationSettings.png"/>
 
         <group id="IncomingChanges.DeclarationNodePopup.Single.Invalid" text="" popup="true">
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.Single" ref="IncomingChanges.DeclarationNodePopup.DeleteSingle"/>
@@ -331,25 +285,11 @@
             <reference id="IncomingChanges.DeclarationNodePopup.Apply.Directory" ref="IncomingChanges.DeclarationNodePopup.ApplyDirectory"/>
             <reference id="IncomingChanges.DeclarationNodePopup.Delete.Directory" ref="IncomingChanges.DeclarationNodePopup.DeleteDirectory"/>
         </group>
-
-        <group id="IncomingChanges.ToolBar" text="" popup="false">
-            <reference id="IncomingChanges.ToolBar.Button.Help" ref="IncomingChanges.ToolBar.Help"/>
-            <separator/>
-            <reference id="IncomingChanges.ToolBar.Button.Up" ref="IncomingChanges.ToolBar.Up"/>
-            <reference id="IncomingChanges.ToolBar.Button.Down" ref="IncomingChanges.ToolBar.Down"/>
-            <separator/>
-            <reference id="IncomingChanges.ToolBar.Button.AutoExpand" ref="IncomingChanges.ToolBar.AutoExpand"/>
-            <reference id="IncomingChanges.ToolBar.Button.ExpandAll" ref="IncomingChanges.ToolBar.ExpandAll"/>
-            <reference id="IncomingChanges.ToolBar.Button.CollapseAll" ref="IncomingChanges.ToolBar.CollapseAll"/>
-            <separator/>
-            <reference id="IncomingChanges.ToolBar.Button.ShowSettings" ref="IncomingChanges.ToolBar.ShowSettings"/>
-        </group>
-
     </actions>
 
   <extensions defaultExtensionNs="com.intellij">
     <projectService serviceImplementation="com.github.cssxfire.CssXFireSettings"/>
-    <projectConfigurable id="com.github.cssxfire.ProjectSettingsConfigurable" nonDefaultProject="true" 
-                         instance="com.github.cssxfire.ProjectSettingsConfigurable"/>
+    <projectConfigurable id="com.github.cssxfire.CssXFireConfigurable" nonDefaultProject="true"
+                         instance="com.github.cssxfire.CssXFireConfigurable"/>
   </extensions>
 </idea-plugin>

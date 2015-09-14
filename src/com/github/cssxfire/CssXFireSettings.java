@@ -50,9 +50,6 @@ public class CssXFireSettings implements PersistentStateComponent<Element> {
 
   private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>() {
     public int compare(@NotNull final VirtualFile o1, @NotNull final VirtualFile o2) {
-      if (o1 == null || o2 == null) {
-        return o1 == null ? o2 == null ? 0 : 1 : -1;
-      }
       return o1.getPath().compareTo(o2.getPath());
     }
   };

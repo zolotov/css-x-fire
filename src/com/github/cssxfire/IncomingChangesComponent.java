@@ -16,19 +16,23 @@
 
 package com.github.cssxfire;
 
-import com.github.cssxfire.action.Help;
 import com.github.cssxfire.filter.ReduceStrategyManager;
 import com.github.cssxfire.tree.CssDeclarationPath;
 import com.github.cssxfire.tree.TreeViewModel;
 import com.github.cssxfire.ui.CssToolWindow;
+import com.intellij.icons.AllIcons;
+import com.intellij.ide.BrowserUtil;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -103,7 +107,12 @@ public class IncomingChangesComponent implements ProjectComponent {
                 public void run() {
                     int res = Messages.showYesNoDialog(project, message, "CSS-X-Fire", null);
                     if (res == 0) {
-                        new Help().actionPerformed(null);
+                        new AnAction("Help", "Show the CSS-X-Fire help page", AllIcons.Actions.Help) {
+                          @Override
+                          public void actionPerformed(AnActionEvent anActionEvent) {
+                            BrowserUtil.browse("http://localhost:6776/files/about.html");
+                          }
+                        }.actionPerformed(null);
                     }
                 }
             });
@@ -111,7 +120,7 @@ public class IncomingChangesComponent implements ProjectComponent {
     }
 
     public void disposeComponent() {
-        // TODO: insert component disposal logic here
+        projectClosed();
     }
 
     @NotNull
@@ -127,7 +136,9 @@ public class IncomingChangesComponent implements ProjectComponent {
 
         final ContentFactory contentFactory = toolWindow.getContentManager().getFactory();
         final Content content = contentFactory.createContent(cssToolWindow, "Incoming changes", true);
-
+        Disposer.register(content, cssToolWindow);
+        Disposer.register(project, content);
+        content.setCloseable(false);
         toolWindow.getContentManager().addContent(content);
         toolWindow.setAutoHide(false);
         toolWindow.setAvailable(true, null);
@@ -142,11 +153,8 @@ public class IncomingChangesComponent implements ProjectComponent {
             return;
         }
         PsiManager.getInstance(project).removePsiTreeChangeListener(myListener);
-
         getTreeViewModel().clearTree();
-
         CssXFireConnector.getInstance().removeProjectComponent(this);
-
         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOLWINDOW_ID);
     }
 

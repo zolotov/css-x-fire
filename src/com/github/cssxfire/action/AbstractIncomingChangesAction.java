@@ -19,22 +19,29 @@ package com.github.cssxfire.action;
 import com.github.cssxfire.IncomingChangesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractIncomingChangesAction extends AnAction {
-    @Nullable
-    protected IncomingChangesComponent getIncomingChangesComponent(AnActionEvent event) {
-        Project project = LangDataKeys.PROJECT.getData(event.getDataContext());
-        if (project == null) {
-            return null;
-        }
-        return IncomingChangesComponent.getInstance(project);
-    }
+import javax.swing.*;
 
-    @Override
-    public void update(AnActionEvent e) {
-        e.getPresentation().setEnabled(IncomingChangesComponent.TOOLWINDOW_ID.equals(e.getPlace()));
-    }
+public abstract class AbstractIncomingChangesAction extends AnAction {
+  public AbstractIncomingChangesAction() {
+  }
+
+  public AbstractIncomingChangesAction(@Nullable String text, @Nullable String description, @Nullable Icon icon) {
+    super(text, description, icon);
+  }
+
+  @Nullable
+  protected IncomingChangesComponent getIncomingChangesComponent(AnActionEvent event) {
+    Project project = CommonDataKeys.PROJECT.getData(event.getDataContext());
+    return project != null ? IncomingChangesComponent.getInstance(project) : null;
+  }
+
+  @Override
+  public void update(AnActionEvent e) {
+    e.getPresentation().setEnabled(getIncomingChangesComponent(e) != null &&
+                                   IncomingChangesComponent.TOOLWINDOW_ID.equals(e.getPlace()));
+  }
 }

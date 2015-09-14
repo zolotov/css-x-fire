@@ -26,6 +26,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.CssMediumList;
+import com.intellij.ui.SimpleTextAttributes;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -65,7 +66,13 @@ public class CssSelectorNode extends CssTreeNode implements Navigatable {
 
     @Override
     public String getText() {
-        return wrapWithHtml("<b>" + selector + "</b>");
+        return selector;
+    }
+
+    @NotNull
+    @Override
+    public SimpleTextAttributes getTextAttributes() {
+        return super.getTextAttributes().derive(SimpleTextAttributes.STYLE_BOLD, null, null, null);
     }
 
     @Override

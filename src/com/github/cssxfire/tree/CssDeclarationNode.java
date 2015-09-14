@@ -18,12 +18,12 @@ package com.github.cssxfire.tree;
 
 import com.github.cssxfire.CssUtils;
 import com.github.cssxfire.CssXFireSettings;
-import com.github.cssxfire.ui.Colors;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.CssDeclaration;
@@ -31,10 +31,13 @@ import com.intellij.psi.css.CssElement;
 import com.intellij.psi.css.CssTerm;
 import com.intellij.psi.css.CssTermList;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.ui.EmptyIcon;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CssDeclarationNode extends CssTreeNode implements Navigatable {
     protected final CssDeclaration cssDeclaration;
@@ -66,10 +69,14 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
 
     @Override
     public String getText() {
-        String text = getName() + ": " + value + (important ? " !important" : "");
-        return deleted
-                ? wrapWithHtmlColor("<strike>" + text + "</strike>", isValid() ? Colors.getModified() : Colors.getInvalid())
-                : wrapWithHtmlColor(text, isValid() ? Colors.getModified() : Colors.getInvalid());
+        return getName() + ": " + value + (important ? " !important" : "");
+    }
+
+    @NotNull
+    @Override
+    public SimpleTextAttributes getTextAttributes() {
+        Color color = isValid() ? FileStatus.MODIFIED.getColor() : FileStatus.DELETED.getColor();
+        return super.getTextAttributes().derive(deleted ? SimpleTextAttributes.STYLE_STRIKEOUT : -1, color, null, null);
     }
 
     public boolean isValid() {

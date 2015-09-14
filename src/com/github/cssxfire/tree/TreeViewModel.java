@@ -17,17 +17,9 @@
 package com.github.cssxfire.tree;
 
 public interface TreeViewModel {
-  boolean canSelect(int direction);
-
-  void select(int direction);
-
-  void applyPending();
-
   void applySelectedNode();
 
   void deleteSelectedNode();
-
-  void collapseAll();
 
   void expandAll();
 

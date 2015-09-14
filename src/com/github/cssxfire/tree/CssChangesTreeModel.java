@@ -16,26 +16,15 @@
 
 package com.github.cssxfire.tree;
 
-import com.github.cssxfire.ui.Colors;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
 
 public class CssChangesTreeModel extends DefaultTreeModel {
-    private static final TreeCellRenderer myTreeCellRenderer = new MyTreeCellRenderer();
-
     public CssChangesTreeModel(Project project) {
         super(new CssRootNode(project), true);
-    }
-
-    public TreeCellRenderer getTreeCellRenderer() {
-        return myTreeCellRenderer;
     }
 
     public void intersect(CssDeclarationPath declarationPath) {
@@ -127,7 +116,7 @@ public class CssChangesTreeModel extends DefaultTreeModel {
      * @param parent the parent node
      * @param child the new child node
      */
-    private void insert(CssTreeNode parent, CssTreeNode child) {
+    private static void insert(CssTreeNode parent, CssTreeNode child) {
         int numChildren = parent.getChildCount();
         if (numChildren == 0) {
             parent.add(child);
@@ -144,33 +133,13 @@ public class CssChangesTreeModel extends DefaultTreeModel {
         parent.add(child);
     }
 
-    private boolean isNewAndDeletedDeclaration(DefaultMutableTreeNode node) {
+    private static boolean isNewAndDeletedDeclaration(DefaultMutableTreeNode node) {
         return node instanceof CssNewDeclarationNode && ((CssNewDeclarationNode) node).isDeleted();
     }
 
-    private CssTreeNode[] consumeFirst(CssTreeNode[] nodes) {
+    private static CssTreeNode[] consumeFirst(CssTreeNode[] nodes) {
         CssTreeNode[] rest = new CssTreeNode[nodes.length - 1];
         System.arraycopy(nodes, 1, rest, 0, rest.length);
         return rest;
-    }
-
-    private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {
-
-        private MyTreeCellRenderer() {
-            setBackgroundSelectionColor(Colors.getDefaultBackground());
-        }
-
-        @Override
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-
-            if (value instanceof CssTreeNode) {
-                CssTreeNode cssTreeNode = (CssTreeNode) value;
-                setIcon(cssTreeNode.getIcon());
-                setText(cssTreeNode.getText());
-            }
-
-            return this;
-        }
     }
 }

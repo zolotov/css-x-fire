@@ -17,12 +17,12 @@
 package com.github.cssxfire.tree;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
+import com.intellij.ui.SimpleTextAttributes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.*;
 
 public abstract class CssTreeNode extends DefaultMutableTreeNode {
     @Nullable
@@ -45,31 +45,16 @@ public abstract class CssTreeNode extends DefaultMutableTreeNode {
         return true;
     }
 
+    @Override
+    public Object getUserObject() {
+        return super.getUserObject();
+    }
+
     @Nullable
     public abstract ActionGroup getActionGroup();
 
     @NotNull
-    protected String wrapWithHtml(String text) {
-        return "<html>" + text + "</html>";
-    }
-
-    @NotNull
-    protected String wrapWithHtmlColor(String text, Color color) {
-        return wrapWithHtml("<font color=\"#" + toHtml(color) + "\">" + text + "</font>");
-    }
-
-    private static String toHtml(Color color) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(padWithZeros(Integer.toHexString(color.getRed())));
-        sb.append(padWithZeros(Integer.toHexString(color.getGreen())));
-        sb.append(padWithZeros(Integer.toHexString(color.getBlue())));
-        return sb.toString();
-    }
-
-    private static String padWithZeros(String s) {
-        while (s.length() < 2) {
-            s = "0" + s;
-        }
-        return s;
+    public SimpleTextAttributes getTextAttributes() {
+        return SimpleTextAttributes.REGULAR_ATTRIBUTES;
     }
 }
