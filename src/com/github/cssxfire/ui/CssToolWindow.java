@@ -362,7 +362,7 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
     @Override
     public void actionPerformed(AnActionEvent e) {
       Project project = e.getRequiredData(CommonDataKeys.PROJECT);
-      ShowSettingsUtil.getInstance().editConfigurable(project, CssXFireConfigurable.getInstance(project));
+      ShowSettingsUtil.getInstance().editConfigurable(project, new CssXFireConfigurable(project));
     }
 
     @Override

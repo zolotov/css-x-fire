@@ -24,6 +24,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
@@ -49,6 +50,7 @@ import java.util.Collection;
 
 public class IncomingChangesComponent implements ProjectComponent {
     public static final String TOOLWINDOW_ID = "CSS-X-Fire";
+    private static final String PREVIOUS_VERSION_PROPERTY_NAME = "css.x.fire.previous.version";
 
     private final Project project;
     private final CssToolWindow cssToolWindow;
@@ -95,11 +97,9 @@ public class IncomingChangesComponent implements ProjectComponent {
             return;
         }
         String currentVersion = pluginDescriptor.getVersion();
-        AppMeta appMeta = CssXFireConnector.getInstance().getState();
-        //noinspection ConstantConditions
-        String previousVersion = appMeta.getVersion();
+        String previousVersion = PropertiesComponent.getInstance().getValue(PREVIOUS_VERSION_PROPERTY_NAME);
         if (!currentVersion.equals(previousVersion)) {
-            appMeta.setVersion(currentVersion);
+            PropertiesComponent.getInstance().setValue(PREVIOUS_VERSION_PROPERTY_NAME, currentVersion);
             final String message = previousVersion == null
                     ? "CSS-X-Fire has been installed.\n\nPress Yes to install the browser plugin."
                     : "CSS-X-Fire has been upgraded from " + previousVersion + " to " + currentVersion + ".\n\nPress Yes to update the browser plugin.";
