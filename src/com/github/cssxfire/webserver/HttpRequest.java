@@ -68,6 +68,7 @@ public class HttpRequest implements Runnable {
           break;
         }
       }
+      if (StringUtil.isEmpty(requestLine)) return;
 
       String q = requestLine.toLowerCase(Locale.US);
       int six = q.indexOf(' ');
