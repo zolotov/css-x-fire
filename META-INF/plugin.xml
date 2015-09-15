@@ -10,6 +10,7 @@
     <change-notes><![CDATA[
         <ul>1.39
             <li>Compatibility with 141.* builds.</li>
+            <li>Cleanup UI.</li>
         </ul>
         <ul>1.38
             <li>Compiled for IDE build 138.</li>
