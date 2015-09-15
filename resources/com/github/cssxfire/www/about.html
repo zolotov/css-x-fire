@@ -1,91 +1,99 @@
 <html>
-    <head>
-        <title>CSS-X-Fire (1.38)</title>
-        <link rel="stylesheet" href="/files/style.css" />
-    </head>
+<head>
+  <title>CSS-X-Fire (1.39)</title>
+  <link rel="stylesheet" href="/files/style.css"/>
+</head>
 
-    <body>
-        <h1>CSS-X-Fire (1.38)</h1>
+<body>
+<h1>CSS-X-Fire (1.39)</h1>
 
-        <h3>Requirements</h3>
-        <p>This plugin requires Firefox with Firebug.</p>
-        <p><i>Users of Google Chrome or Firefox with Firebug Lite, please look <a href="lite.html">here</a>.</i></p>
+<h3>Requirements</h3>
 
-        <h3>Get connected</h3>
-        <p>
-            Download and install the corresponding browser plugin -
-            <a href="/files/cssxfire.xpi">cssxfire.xpi</a>
-            (1.37) - to connect Firebug CSS editor with the IDE plugin.
-        </p>
+<p>This plugin requires Firefox with Firebug.</p>
 
-        <h3>Using</h3>
-        <p>
-            Use Firebug CSS editor to edit and add style properties.
-            <img class="screenshot" src="/files/css-x-fire-5.png" alt="Firebug CSS editor" />
-        </p>
-        <p>
-            The IDE toolwindow shows the changes made in Firebug in a tree view, categorized by file and CSS selector.
-            From here you can apply or discard changes on an entire file, selector or on a specific property.
-            <img class="screenshot" src="/files/css-x-fire-2.png" alt="CSS property nodes" />
-        </p>
-        <p>
-            The property nodes - the tree leafs - will either be blue (modified), green (new) or gray (invalid). They
-            are also navigatable, e.g. middle-click, double-click or press enter key on a valid property to jump to the corresponding
-            highlighted source code.
-            <img class="screenshot" src="/files/css-x-fire-4.png" alt="Jump-to-source" />
-        </p>
+<p><i>Users of Google Chrome or Firefox with Firebug Lite, please look <a href="lite.html">here</a>.</i></p>
 
-        <h3>Settings</h3>
-        <p>
-            The settings are stored on a project level. Here is a brief explanation of the parameters and what they do:
-        </p>
-        <p>
-            <b>Clear pending changes when leaving or reloading page:</b> When checked, all pending changes will be
-            cleared whenever the web page is refreshed or left, or when Firebug is (re)opened.
-        </p>
-        <p>
-            <b>Match CSS3 media queries:</b> When checked, all incoming changes will be filtered down to the selectors
-            matching the media query.
-        </p>
-        <p>
-            <b>Currently opened files:</b> When checked, all incoming changes will be filtered down to the files
-            that are currently opened in the editor.
-        </p>
-        <p>
-            <b>Match filename:</b> When checked, all incoming changes will be filtered down to files with a
-            the given filename provided by Firebug, regardless of path. Note that this setting will have no
-            effect when using route mappings (see below).
-        </p>
-        <p>
-            <b>Use routes:</b> When checked, each incoming change will be routed to one single project file, based
-            on the mappings table.
-            <img class="screenshot" src="/files/css-x-fire-3.png" alt="Settings" />
-            <b>Note: </b> These routes are only used by CSS-X-Fire. A route that ends with whitespace or does not start
-            with a forward slash will not be able to be added.
-        </p>
+<h3>Get connected</h3>
 
-        <h3>About</h3>
-        <p>
-            Plugin home: <a href="http://plugins.intellij.net/plugin/?idea&id=5348">http://plugins.intellij.net/plugin/?idea&id=5348</a>
-            <br/>
-            Please use the above link to comment or rate this plugin. All feedback is greatly appreciated!
-        </p>
-        <p>
-            Project home: <a href="https://github.com/ronniekk/css-x-fire">https://github.com/ronniekk/css-x-fire</a>
-            <br/>
-            Please report bugs and make feature requests here.
-        </p>
-        <p>
-            If you find CSS-X-Fire useful and want to say thank you, please consider making a small donation through Paypal.
-            <br/>
-            <a title="Donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=975RZQCCLGV6J" rel="nofollow">
-                <img alt="Donate" border="0" src="/files/btn_donate_LG.gif"/>
-            </a>
-        </p>
-        <p>
-            This help page can be accessed by clicking the help button in CSS-X-Fire toolwindow.
-            <img class="screenshot" src="/files/css-x-fire-1.png" alt="help" />
-        </p>
-        <p><i>Style with pleasure!</i></p>
-    </body>
+<p>
+  Download and install the corresponding browser plugin -
+  <a href="/files/cssxfire.xpi">cssxfire.xpi</a>
+  (1.37) - to connect Firebug CSS editor with the IDE plugin.
+</p>
+
+<h3>Using</h3>
+
+<p>
+  Use Firebug CSS editor to edit and add style properties.
+  <img class="screenshot" src="/files/css-x-fire-5.png" alt="Firebug CSS editor" width="645" height="258"/>
+</p>
+
+<p>
+  The IDE toolwindow shows the changes made in Firebug in a tree view, categorized by file and CSS selector.
+  From here you can apply or discard changes on an entire file, selector or on a specific property.
+  <img class="screenshot" src="/files/css-x-fire-2.png" alt="CSS property nodes" width="645" height="258"/>
+</p>
+
+<p>
+  The property nodes - the tree leafs - will either be blue (modified), green (new) or gray (invalid). They
+  are also navigatable, e.g. middle-click, double-click or press enter key on a valid property to jump to the corresponding
+  highlighted source code.
+</p>
+
+<h3>Settings</h3>
+
+<p>
+  The settings are stored on a project level. Here is a brief explanation of the parameters and what they do:
+</p>
+
+<p>
+  <b>Clear pending changes when leaving or reloading page:</b> When checked, all pending changes will be
+  cleared whenever the web page is refreshed or left, or when Firebug is (re)opened.
+</p>
+
+<p>
+  <b>Match CSS3 media queries:</b> When checked, all incoming changes will be filtered down to the selectors
+  matching the media query.
+</p>
+
+<p>
+  <b>Currently opened files:</b> When checked, all incoming changes will be filtered down to the files
+  that are currently opened in the editor.
+</p>
+
+<p>
+  <b>Match filename:</b> When checked, all incoming changes will be filtered down to files with a
+  the given filename provided by Firebug, regardless of path. Note that this setting will have no
+  effect when using route mappings (see below).
+</p>
+
+<p>
+  <b>Use routes:</b> When checked, each incoming change will be routed to one single project file, based
+  on the mappings table.
+  <img class="screenshot" src="/files/css-x-fire-3.png" alt="Settings" width="555" height="624"/>
+  <b>Note: </b> These routes are only used by CSS-X-Fire. A route that ends with whitespace or does not start
+  with a forward slash will not be able to be added.
+</p>
+
+<h3>About</h3>
+
+<p>
+  Plugin home: <a href="http://plugins.intellij.net/plugin/?idea&id=5348">http://plugins.intellij.net/plugin/?idea&id=5348</a>
+  <br/>
+  Please use the above link to comment or rate this plugin. All feedback is greatly appreciated!
+</p>
+
+<p>
+  Project home: <a href="https://github.com/zolotov/css-x-fire">https://github.com/zolotov/css-x-fire</a>
+  <br/>
+  Please report bugs and make feature requests here.
+</p>
+
+<p>
+  This help page can be accessed by clicking the help button in CSS-X-Fire toolwindow.
+  <img class="screenshot" src="/files/css-x-fire-1.png" alt="help" width="645" height="258"/>
+</p>
+
+<p><i>Style with pleasure!</i></p>
+</body>
 </html>
