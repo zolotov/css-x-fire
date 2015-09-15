@@ -31,7 +31,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
-import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -155,9 +154,8 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
     });
   }
 
-  private JButton createButton(@NotNull  String name) {
+  private static JButton createButton(@NotNull String name) {
     JButton button = new JButton(UIUtil.replaceMnemonicAmpersand(name));
-    DumbService.getInstance(myProject).makeDumbAware(button, this);
     DialogUtil.registerMnemonic(button);
     button.setEnabled(false);
     return button;
