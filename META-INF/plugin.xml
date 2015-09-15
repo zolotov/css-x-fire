@@ -6,7 +6,7 @@
         <p>Style with pleasure!</p>
     ]]></description>
     <version>1.39</version>
-    <vendor url="https://github.com/ronniekk/css-x-fire" email="ronnie.kolehmainen at gmail.com">Ronnie Kolehmainen</vendor>
+    <vendor url="https://github.com/ronniekk/css-x-fire" email="alexander.zolotov@jetbrains.com">JetBrains</vendor>
     <change-notes><![CDATA[
         <ul>1.39
             <li>Compatibility with 141.* builds.</li>
