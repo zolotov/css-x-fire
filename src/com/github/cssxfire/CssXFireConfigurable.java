@@ -19,217 +19,243 @@ package com.github.cssxfire;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileFilter;
-import com.intellij.ui.table.JBTable;
+import com.intellij.ui.IdeBorderFactory;
+import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.components.JBCheckBox;
+import com.intellij.util.ui.FormBuilder;
+import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.AbstractFileTreeTable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.ScrollPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Map;
 
+import static com.intellij.util.ui.FormBuilder.createFormBuilder;
+
 public class CssXFireConfigurable implements SearchableConfigurable {
-    public static CssXFireConfigurable getInstance(final Project project) {
-        return new CssXFireConfigurable(project);
+
+  private Project myProject;
+  private JCheckBox myAutoClearCb;
+  private JCheckBox myMediaReduceCb;
+  private JCheckBox myFileNameReduceCb;
+  private JCheckBox myRoutesReduceCb;
+  private JCheckBox myOpenedFilesReduceCb;
+  private JCheckBox myResolveVariablesCb;
+  private JCheckBox myResolveMixinsCb;
+  private FileTreeTable myRoutesTable;
+  private JButton mySetRootButton;
+
+  public CssXFireConfigurable(@NotNull Project project) {
+    myProject = project;
+  }
+
+  @NotNull
+  public String getId() {
+    return getClass().getName();
+  }
+
+  public Runnable enableSearch(String option) {
+    return null;
+  }
+
+  public JComponent createComponent() {
+    myAutoClearCb = new JBCheckBox("Clear pending changes when leaving or reloading page");
+    JPanel generalPanel = createFormBuilder().addComponent(myAutoClearCb).getPanel();
+    generalPanel.setBorder(IdeBorderFactory.createTitledBorder("General"));
+
+    myResolveVariablesCb = new JBCheckBox("Resolve variables");
+    myResolveMixinsCb = new JBCheckBox("Resolve mixins");
+    JPanel lessSassPanel = createFormBuilder().addComponent(myResolveVariablesCb).addComponent(myResolveMixinsCb).getPanel();
+    lessSassPanel.setBorder(IdeBorderFactory.createTitledBorder("Less / Sass"));
+
+    myMediaReduceCb = new JBCheckBox("Match CSS3 media queries");
+    myOpenedFilesReduceCb = new JBCheckBox("Currently opened files");
+    myFileNameReduceCb = new JBCheckBox("Match filename");
+    myRoutesReduceCb = new JBCheckBox("Use routes");
+    myRoutesTable = new FileTreeTable(myProject);
+    myRoutesReduceCb.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(@NotNull ChangeEvent event) {
+        UIUtil.setEnabled(myRoutesTable, myRoutesReduceCb.isSelected(), true);
+      }
+    });
+    mySetRootButton = new JButton("Set as web root");
+
+    final JPanel reduceStrategyPanel = new FormBuilder() {
+      @Override
+      protected int getFill(JComponent component) {
+        if (component instanceof JButton) {
+          return GridBagConstraints.NONE;
+        }
+        else if (component instanceof FileTreeTable) {
+          return GridBagConstraints.BOTH;
+        }
+        return super.getFill(component);
+      }
+    }
+      .addComponent(myMediaReduceCb)
+      .addComponent(myOpenedFilesReduceCb)
+      .addComponent(myFileNameReduceCb)
+      .addComponent(myRoutesReduceCb)
+      .setFormLeftIndent(UIUtil.getCheckBoxTextHorizontalOffset(myRoutesReduceCb))
+      .addComponent(ScrollPaneFactory.createScrollPane(myRoutesTable))
+      .addComponent(mySetRootButton)
+      .getPanel();
+    reduceStrategyPanel.setBorder(IdeBorderFactory.createTitledBorder("Reduce strategy"));
+
+    myRoutesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(@NotNull ListSelectionEvent e) {
+        updateWebRootButton();
+      }
+    });
+    mySetRootButton.addActionListener(new ActionListener() {
+      public void actionPerformed(@NotNull ActionEvent e) {
+        updateWebRoot();
+      }
+    });
+
+    JPanel panel = new JPanel(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    c.anchor = GridBagConstraints.NORTHWEST;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 0.0;
+    c.weighty = 0.0;
+    c.gridwidth = GridBagConstraints.REMAINDER;
+
+    panel.add(generalPanel, c);
+    panel.add(lessSassPanel, c);
+    c.weightx = 1.0;
+    c.weighty = 1.0;
+    panel.add(reduceStrategyPanel, c);
+
+    return panel;
+  }
+
+  public void disposeUIResources() {
+    UIUtil.dispose(myAutoClearCb);
+    UIUtil.dispose(myMediaReduceCb);
+    UIUtil.dispose(myFileNameReduceCb);
+    UIUtil.dispose(myRoutesReduceCb);
+    UIUtil.dispose(myOpenedFilesReduceCb);
+    UIUtil.dispose(myResolveVariablesCb);
+    UIUtil.dispose(myResolveMixinsCb);
+    UIUtil.dispose(myRoutesTable);
+    UIUtil.dispose(mySetRootButton);
+  }
+
+  private void updateWebRoot() {
+    int selectedRow = myRoutesTable.getSelectedRow();
+    if (selectedRow != -1) {
+      Map<VirtualFile, String> currentValues = myRoutesTable.getValues();
+      Object file = myRoutesTable.getValueAt(selectedRow, 0);
+      if (file instanceof VirtualFile) {
+        for (VirtualFile key : new HashSet<VirtualFile>(currentValues.keySet())) {
+          if ("/".equals(currentValues.get(key))) {
+            currentValues.remove(key);
+          }
+        }
+        currentValues.put((VirtualFile)file, "/");
+      }
+      myRoutesTable.reset(currentValues);
+      updateWebRootButton();
+    }
+  }
+
+  private void updateWebRootButton() {
+    int selectedRow = myRoutesTable.getSelectedRow();
+    if (selectedRow == -1) {
+      mySetRootButton.setEnabled(false);
+      return;
+    }
+    Object file = myRoutesTable.getValueAt(selectedRow, 0);
+    Object route = myRoutesTable.getValueAt(selectedRow, 1);
+    mySetRootButton.setEnabled(!"/".equals(route) && file instanceof VirtualFile && ((VirtualFile)file).isDirectory()
+                               && myRoutesTable.isValueEditableForFile((VirtualFile)file));
+  }
+
+  public boolean isModified() {
+    CssXFireSettings settings = CssXFireSettings.getInstance(myProject);
+    return !settings.getRoutes().getMappings().equals(myRoutesTable.getValues())
+           || settings.isAutoClear() != myAutoClearCb.isSelected()
+           || settings.isMediaReduce() != myMediaReduceCb.isSelected()
+           || settings.isFileReduce() != myFileNameReduceCb.isSelected()
+           || settings.isUseRoutes() != myRoutesReduceCb.isSelected()
+           || settings.isCurrentDocumentsReduce() != myOpenedFilesReduceCb.isSelected()
+           || settings.isResolveVariables() != myResolveVariablesCb.isSelected()
+           || settings.isResolveMixins() != myResolveMixinsCb.isSelected();
+  }
+
+  public void apply() throws ConfigurationException {
+    CssXFireSettings settings = CssXFireSettings.getInstance(myProject);
+    settings.getRoutes().setMappings(myRoutesTable.getValues());
+    settings.setAutoClear(myAutoClearCb.isSelected());
+    settings.setMediaReduce(myMediaReduceCb.isSelected());
+    settings.setFileReduce(myFileNameReduceCb.isSelected());
+    settings.setCurrentDocumentsReduce(myOpenedFilesReduceCb.isSelected());
+    settings.setResolveVariables(myResolveVariablesCb.isSelected());
+    settings.setResolveMixins(myResolveMixinsCb.isSelected());
+    settings.setUseRoutes(myRoutesReduceCb.isSelected());
+  }
+
+  public void reset() {
+    CssXFireSettings settings = CssXFireSettings.getInstance(myProject);
+    myRoutesTable.reset(settings.getRoutes().getMappings());
+    UIUtil.setEnabled(myRoutesTable, settings.isUseRoutes(), true);
+    myAutoClearCb.setSelected(settings.isAutoClear());
+    myFileNameReduceCb.setSelected(settings.isFileReduce());
+    myMediaReduceCb.setSelected(settings.isMediaReduce());
+    myOpenedFilesReduceCb.setSelected(settings.isCurrentDocumentsReduce());
+    myResolveVariablesCb.setSelected(settings.isResolveVariables());
+    myResolveMixinsCb.setSelected(settings.isResolveMixins());
+    myRoutesReduceCb.setSelected(settings.isUseRoutes());
+    updateWebRootButton();
+  }
+
+  @Nls
+  public String getDisplayName() {
+    return "CSS-X-Fire";
+  }
+
+  public String getHelpTopic() {
+    return null;
+  }
+
+  private static class FileTreeTable extends AbstractFileTreeTable<String> {
+    private final VirtualFile myProjectBaseDir;
+
+    private FileTreeTable(@NotNull Project project) {
+      super(project, String.class, "Route", VirtualFileFilter.ALL, false);
+      myProjectBaseDir = project.getBaseDir();
     }
 
-    private Project myProject;
-    private JCheckBox checkBoxAutoClear;
-    private JCheckBox checkBoxMediaReduce;
-    private JCheckBox checkBoxFileReduce;
-    private JCheckBox checkBoxUseRoutes;
-    private JCheckBox checkBoxCurrentDocumentsReduce;
-    private JCheckBox checkBoxResolveVariables;
-    private JCheckBox checkBoxResolveMixins;
-    private FileTreeTable routesTable;
-    private JScrollPane routesScrollPane;
-    private JPanel myPanel;
-    private JButton buttonSetRoot;
+    @Override
+    protected boolean isValueEditableForFile(VirtualFile virtualFile) {
+      if (virtualFile == null) {
+        return false;
+      }
+      return !virtualFile.getUrl().startsWith(getSettingsUrl());
+    }
 
-    public CssXFireConfigurable(@NotNull  Project project) {
-        myProject = project;
+    @Override
+    protected boolean isNullObject(String value) {
+      return value == null || !value.equals(value.trim()) || !StringUtil.startsWithChar(value, '/');
     }
 
     @NotNull
-    public String getId() {
-        return getClass().getName();
+    private String getSettingsUrl() {
+      return (myProjectBaseDir != null ? myProjectBaseDir.getUrl() : "") + "/.idea";
     }
-
-    public Runnable enableSearch(String option) {
-        return null;
-    }
-
-    public JComponent createComponent() {
-        routesTable = new FileTreeTable();
-        routesTable.getColumnModel().getColumn(0).setPreferredWidth(260);
-        routesTable.getColumnModel().getColumn(1).setPreferredWidth(240);
-
-        routesScrollPane.setViewportView(routesTable);
-
-        routesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(@NotNull ListSelectionEvent e) {
-                updateWebRootButton();
-            }
-        });
-        buttonSetRoot.addActionListener(new ActionListener() {
-            public void actionPerformed(@NotNull ActionEvent e) {
-                updateWebRoot();
-            }
-        });
-
-        reset();
-        updateWebRootButton();
-
-        return myPanel;
-    }
-
-    private void updateWebRoot() {
-        int selectedRow = routesTable.getSelectedRow();
-        if (selectedRow != -1) {
-            Map<VirtualFile, String> currentValues = routesTable.getValues();
-            Object file = routesTable.getValueAt(selectedRow, 0);
-            if (file instanceof VirtualFile) {
-                for (VirtualFile key : new HashSet<VirtualFile>(currentValues.keySet())) {
-                    if ("/".equals(currentValues.get(key))) {
-                        currentValues.remove(key);
-                    }
-                }
-                currentValues.put((VirtualFile) file, "/");
-            }
-            routesTable.reset(currentValues);
-            updateWebRootButton();
-        }
-    }
-
-    private void updateWebRootButton() {
-        int selectedRow = routesTable.getSelectedRow();
-        if (selectedRow == -1) {
-            buttonSetRoot.setEnabled(false);
-            return;
-        }
-        Object file = routesTable.getValueAt(selectedRow, 0);
-        Object route = routesTable.getValueAt(selectedRow, 1);
-        buttonSetRoot.setEnabled(!"/".equals(route) && file instanceof VirtualFile && ((VirtualFile) file).isDirectory());
-    }
-
-    public boolean isModified() {
-        CssXFireSettings state = CssXFireSettings.getInstance(myProject);
-        return !state.getRoutes().getMappings().equals(routesTable.getValues())
-                || state.isAutoClear() != checkBoxAutoClear.isSelected()
-                || state.isMediaReduce() != checkBoxMediaReduce.isSelected()
-                || state.isFileReduce() != checkBoxFileReduce.isSelected()
-                || state.isUseRoutes() != checkBoxUseRoutes.isSelected()
-                || state.isCurrentDocumentsReduce() != checkBoxCurrentDocumentsReduce.isSelected()
-                || state.isResolveVariables() != checkBoxResolveVariables.isSelected()
-                || state.isResolveMixins() != checkBoxResolveMixins.isSelected();
-    }
-
-    public void apply() throws ConfigurationException {
-        CssXFireSettings state = CssXFireSettings.getInstance(myProject);
-        state.getRoutes().setMappings(routesTable.getValues());
-        state.setAutoClear(checkBoxAutoClear.isSelected());
-        state.setMediaReduce(checkBoxMediaReduce.isSelected());
-        state.setFileReduce(checkBoxFileReduce.isSelected());
-        state.setCurrentDocumentsReduce(checkBoxCurrentDocumentsReduce.isSelected());
-        state.setResolveVariables(checkBoxResolveVariables.isSelected());
-        state.setResolveMixins(checkBoxResolveMixins.isSelected());
-        state.setUseRoutes(checkBoxUseRoutes.isSelected());
-
-        // set default values for new projects (legacy)
-        //noinspection ConstantConditions
-        CssXFireConnector.getInstance().getState().setMediaReduce(checkBoxMediaReduce.isSelected());
-        //noinspection ConstantConditions
-        CssXFireConnector.getInstance().getState().setSmartReduce(checkBoxFileReduce.isSelected());
-    }
-
-    public void reset() {
-        CssXFireSettings state = CssXFireSettings.getInstance(myProject);
-        routesTable.reset(state.getRoutes().getMappings());
-        checkBoxAutoClear.setSelected(state.isAutoClear());
-        checkBoxFileReduce.setSelected(state.isFileReduce());
-        checkBoxMediaReduce.setSelected(state.isMediaReduce());
-        checkBoxCurrentDocumentsReduce.setSelected(state.isCurrentDocumentsReduce());
-        checkBoxResolveVariables.setSelected(state.isResolveVariables());
-        checkBoxResolveMixins.setSelected(state.isResolveMixins());
-        checkBoxUseRoutes.setSelected(state.isUseRoutes());
-    }
-
-    public void disposeUIResources() {
-        
-    }
-
-    @Nls
-    public String getDisplayName() {
-        return "CSS-X-Fire";
-    }
-
-    public String getHelpTopic() {
-        return null;
-    }
-
-    private void createUIComponents() {
-        routesScrollPane = new MyScrollPane(new JBTable());
-    }
-
-    private class FileTreeTable extends AbstractFileTreeTable<String> {
-        private FileTreeTable() {
-            super(myProject, String.class, "Route", VirtualFileFilter.ALL, false);
-        }
-
-        @Override
-        protected boolean isValueEditableForFile(VirtualFile virtualFile) {
-            if (virtualFile == null) {
-                return false;
-            }
-            return !virtualFile.getUrl().startsWith(getSettingsUrl());
-        }
-
-        @Override
-        protected boolean isNullObject(String value) {
-            /*
-                Disallow any route that has leading or trailing whitespace, or
-                does not start with a forward slash.
-             */
-            if (value == null) {
-                return true;
-            }
-            String trimmed = value.trim();
-            return !trimmed.equals(value) || !trimmed.startsWith("/");
-        }
-
-        @NotNull
-        private String getSettingsUrl() {
-            VirtualFile settingsDir = myProject.getBaseDir();
-            return (settingsDir != null ? settingsDir.getUrl() : "") + "/.idea";
-        }
-    }
-
-    private static class MyScrollPane extends JScrollPane {
-        MyScrollPane(JComponent view) {
-            super(view);
-        }
-
-        /**
-         * Scrollpane's background should be always in sync with view's background
-         */
-        public void setUI(ScrollPaneUI ui) {
-            super.setUI(ui);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    Component component = getViewport().getView();
-                    if (component != null) {
-                        getViewport().setBackground(component.getBackground());
-                    }
-                }
-            });
-        }
-    }
+  }
 }

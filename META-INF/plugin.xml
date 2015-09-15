@@ -289,7 +289,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <projectService serviceImplementation="com.github.cssxfire.CssXFireSettings"/>
-    <projectConfigurable id="com.github.cssxfire.CssXFireConfigurable" nonDefaultProject="true"
+    <projectConfigurable id="com.github.cssxfire.CssXFireConfigurable" nonDefaultProject="true" groupId="tools"
                          instance="com.github.cssxfire.CssXFireConfigurable"/>
   </extensions>
 </idea-plugin>
