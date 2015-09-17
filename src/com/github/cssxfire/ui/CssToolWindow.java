@@ -376,7 +376,8 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
 
     @Nullable
     protected CssXFireSettings getProjectSettings(AnActionEvent event) {
-      return CssXFireSettings.getInstance(event.getRequiredData(CommonDataKeys.PROJECT));
+      Project project = event.getProject();
+      return project != null ? CssXFireSettings.getInstance(project) : null;
     }
 
     @Override
@@ -396,7 +397,7 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
     @Override
     public void update(@NotNull AnActionEvent e) {
       super.update(e);
-      e.getPresentation().setEnabled(e.getProject() != null);
+      e.getPresentation().setEnabled(getProjectSettings(e) != null);
     }
   }
 

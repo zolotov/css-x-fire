@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="CSS">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/IntelliJ IDEA 14.app/Contents/plugins/CSS/lib/css-openapi.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/IntelliJ IDEA 14.app/Contents/plugins/CSS/lib/css.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
