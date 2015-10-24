@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CSS-X-Fire.iml" filepath="$PROJECT_DIR$/CSS-X-Fire.iml" />
+      <module fileurl="file://$PROJECT_DIR$/css-x-fire.iml" filepath="$PROJECT_DIR$/css-x-fire.iml" />
     </modules>
   </component>
 </project>
-

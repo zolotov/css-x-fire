@@ -1,0 +1,48 @@
+plugins {
+    id 'org.jetbrains.intellij' version "0.0.27"
+}
+
+version = "${version}.$buildNumber"
+
+apply plugin: 'java'
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
+def generatedExtension = "$buildDir/extension"
+sourceSets {
+    main {
+        java.srcDirs 'src', 'gen'
+        resources.srcDir 'resources'
+        output.dir(generatedExtension, builtBy: 'buildExtension')
+    }
+}
+
+apply plugin: 'org.jetbrains.intellij'
+intellij {
+    version ideaVersion
+    pluginName 'Css-X-Fire'
+    plugins 'CSS', 'less', 'sass'
+    downloadSources Boolean.valueOf(sources)
+    publish {
+        username publishUsername
+        password publishPassword
+        pluginId '5348'
+    }
+}
+
+apply plugin: 'idea'
+idea {
+    project {
+        jdkName = javaVersion
+        languageLevel = javaVersion
+    }
+}
+
+task buildExtension(type: Zip) {
+    println "$generatedExtension/com/github/cssxfire/www"
+    println "$projectDir/cssxfire/src"
+    from "$projectDir/cssxfire/src"
+    destinationDir = file("$generatedExtension/com/github/cssxfire/www/")
+    archiveName = 'cssxfire.xpi'
+}
