@@ -1,6 +1,3 @@
-/system-test/
-/config-test/
-
 /build/
 .gradle/
 
