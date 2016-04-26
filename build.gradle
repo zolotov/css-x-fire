@@ -1,8 +1,14 @@
 plugins {
     id 'org.jetbrains.intellij' version "0.0.43"
+    id "com.moowork.node" version "0.12"
 }
 
 version = "${version}.$buildNumber"
+
+node {
+    version = '4.4.3'
+    download = true
+}
 
 apply plugin: 'java'
 sourceCompatibility = javaVersion
@@ -39,10 +45,16 @@ idea {
     }
 }
 
-task buildExtension(type: Zip) {
+task buildExtension(type: Zip, group: 'build') {
     println "$generatedExtension/com/github/cssxfire/www"
     println "$projectDir/cssxfire/src"
     from "$projectDir/cssxfire/src"
     destinationDir = file("$generatedExtension/com/github/cssxfire/www/")
     archiveName = 'cssxfire.xpi'
 }
+
+
+task installJpm(type: NpmTask, group: 'build') {
+    args = ['install', 'jpm']
+}
+buildExtension.dependsOn(installJpm)
