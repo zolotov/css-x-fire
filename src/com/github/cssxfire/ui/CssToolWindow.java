@@ -16,6 +16,7 @@
 
 package com.github.cssxfire.ui;
 
+import com.github.cssxfire.CssUtils;
 import com.github.cssxfire.CssXFireConfigurable;
 import com.github.cssxfire.CssXFireSettings;
 import com.github.cssxfire.IncomingChangesComponent;
@@ -172,7 +173,7 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
     actionGroup.add(new AnAction("Help", "Show the CSS-X-Fire help page", AllIcons.Actions.Help) {
       @Override
       public void actionPerformed(AnActionEvent anActionEvent) {
-        BrowserUtil.browse("http://localhost:6776/files/about.html");
+        CssUtils.openInFirefox("http://localhost:6776/files/about.html");
       }
     });
     actionGroup.addSeparator();

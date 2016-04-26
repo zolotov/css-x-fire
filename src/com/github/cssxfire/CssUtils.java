@@ -17,6 +17,10 @@
 package com.github.cssxfire;
 
 import com.github.cssxfire.resolve.GotoDeclarationResolver;
+import com.intellij.ide.browsers.BrowserFamily;
+import com.intellij.ide.browsers.BrowserLauncher;
+import com.intellij.ide.browsers.WebBrowser;
+import com.intellij.ide.browsers.WebBrowserManager;
 import com.intellij.lang.Language;
 import com.intellij.lang.css.CSSLanguage;
 import com.intellij.openapi.components.ServiceManager;
@@ -176,5 +180,10 @@ public class CssUtils {
     public static CssMediumList findMediumList(@Nullable PsiElement element) {
         CssMedia media = PsiTreeUtil.getNonStrictParentOfType(element, CssMedia.class);
         return media != null ? media.getMediumList() : null;
+    }
+
+    public static void openInFirefox(@NotNull String url) {
+        WebBrowser firefox = WebBrowserManager.getInstance().getFirstBrowser(BrowserFamily.FIREFOX);
+        BrowserLauncher.getInstance().browse(url, WebBrowserManager.getInstance().isActive(firefox) ? firefox : null);
     }
 }

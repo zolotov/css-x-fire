@@ -16,12 +16,12 @@
 
 package com.github.cssxfire.action;
 
-import com.intellij.ide.BrowserUtil;
+import com.github.cssxfire.CssUtils;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 public class DownloadPlugin extends AnAction {
     public void actionPerformed(AnActionEvent e) {
-        BrowserUtil.browse("http://localhost:6776/files/cssxfire.xpi");
+        CssUtils.openInFirefox("http://localhost:6776/files/cssxfire.xpi");
     }
 }

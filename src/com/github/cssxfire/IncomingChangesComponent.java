@@ -21,7 +21,6 @@ import com.github.cssxfire.tree.CssDeclarationPath;
 import com.github.cssxfire.tree.TreeViewModel;
 import com.github.cssxfire.ui.CssToolWindow;
 import com.intellij.icons.AllIcons;
-import com.intellij.ide.BrowserUtil;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.ide.util.PropertiesComponent;
@@ -110,7 +109,7 @@ public class IncomingChangesComponent implements ProjectComponent {
                         new AnAction("Help", "Show the CSS-X-Fire help page", AllIcons.Actions.Help) {
                           @Override
                           public void actionPerformed(AnActionEvent anActionEvent) {
-                            BrowserUtil.browse("http://localhost:6776/files/about.html");
+                            CssUtils.openInFirefox("http://localhost:6776/files/about.html");
                           }
                         }.actionPerformed(null);
                     }
