@@ -1,13 +1,13 @@
 plugins {
-    id 'org.jetbrains.intellij' version "0.0.43"
-    id "com.moowork.node" version "0.12"
+  id 'org.jetbrains.intellij' version "0.0.43"
+  id "com.moowork.node" version "0.12"
 }
 
 version = "${version}.$buildNumber"
 
 node {
-    version = '4.4.3'
-    download = true
+  version = '4.4.3'
+  download = true
 }
 
 apply plugin: 'java'
@@ -17,44 +17,48 @@ tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
 def generatedExtension = "$buildDir/extension"
 sourceSets {
-    main {
-        java.srcDirs 'src', 'gen'
-        resources.srcDir 'resources'
-        output.dir(generatedExtension, builtBy: 'buildExtension')
-    }
+  main {
+    java.srcDirs 'src', 'gen'
+    resources.srcDir 'resources'
+    output.dir(generatedExtension, builtBy: 'buildExtension')
+  }
 }
 
 apply plugin: 'org.jetbrains.intellij'
 intellij {
-    version ideaVersion
-    pluginName 'Css-X-Fire'
-    plugins 'CSS', 'less', 'sass'
-    downloadSources Boolean.valueOf(sources)
-    publish {
-        username publishUsername
-        password publishPassword
-        pluginId '5348'
-    }
+  version ideaVersion
+  pluginName 'Css-X-Fire'
+  plugins 'CSS', 'less', 'sass'
+  downloadSources Boolean.valueOf(sources)
+  publish {
+    username publishUsername
+    password publishPassword
+    pluginId '5348'
+  }
 }
 
 apply plugin: 'idea'
 idea {
-    project {
-        jdkName = javaVersion
-        languageLevel = javaVersion
-    }
+  project {
+    jdkName = javaVersion
+    languageLevel = javaVersion
+  }
 }
 
 task buildExtension(type: Zip, group: 'build') {
-    println "$generatedExtension/com/github/cssxfire/www"
-    println "$projectDir/cssxfire/src"
-    from "$projectDir/cssxfire/src"
-    destinationDir = file("$generatedExtension/com/github/cssxfire/www/")
-    archiveName = 'cssxfire.xpi'
+  from "$projectDir/cssxfire/src"
+  destinationDir = file("$generatedExtension/com/github/cssxfire/www/")
+  archiveName = 'cssxfire.xpi'
 }
 
-
-task installJpm(type: NpmTask, group: 'build') {
-    args = ['install', 'jpm']
+task installJpm(type: NpmTask, group: 'extension') {
+  args = ['install', 'git+https://git@github.com/mozilla-jetpack/jpm.git']
+  //should be replace with args = ['install', 'jpm'] after 1.0.8 (https://github.com/mozilla-jetpack/jpm/issues/458)
 }
-buildExtension.dependsOn(installJpm)
+
+task signExtension(type: NodeTask, group: 'build', dependsOn: [buildExtension, installJpm]) {
+  def extension = buildExtension.outputs.files.singleFile
+  println 'Signing $extension'
+  script = file('node_modules/.bin/jpm')
+  args = ['sign', '--api-key', AMO_API_KEY, '--api-secret', AMO_API_SECRET, '--xpi', extension]
+}
