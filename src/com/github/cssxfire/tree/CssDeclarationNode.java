@@ -21,6 +21,7 @@ import com.github.cssxfire.CssXFireSettings;
 import com.intellij.ide.SelectInEditorManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vcs.FileStatus;
@@ -40,6 +41,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CssDeclarationNode extends CssTreeNode implements Navigatable {
+    private static final Logger LOG = Logger.getInstance(CssDeclarationNode.class);
     protected final CssDeclaration cssDeclaration;
     protected final String value;
     protected boolean deleted;
@@ -119,15 +121,14 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
                 }
             }
         } catch (IncorrectOperationException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
     @Override
     public ActionGroup getActionGroup() {
-        return isValid()
-                ? (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single")
-                : (ActionGroup) ActionManager.getInstance().getAction("IncomingChanges.DeclarationNodePopup.Single.Invalid");
+        String groupId = isValid() ? "IncomingChanges.DeclarationNodePopup.Single" : "IncomingChanges.DeclarationNodePopup.Single.Invalid";
+        return (ActionGroup) ActionManager.getInstance().getAction(groupId);
     }
 
     protected CssElement getNavigationElement() {

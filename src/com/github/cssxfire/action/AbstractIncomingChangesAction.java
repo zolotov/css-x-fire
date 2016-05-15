@@ -41,7 +41,6 @@ public abstract class AbstractIncomingChangesAction extends AnAction {
 
   @Override
   public void update(AnActionEvent e) {
-    e.getPresentation().setEnabled(getIncomingChangesComponent(e) != null &&
-                                   IncomingChangesComponent.TOOLWINDOW_ID.equals(e.getPlace()));
+    e.getPresentation().setEnabled(getIncomingChangesComponent(e) != null);
   }
 }
