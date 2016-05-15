@@ -4,7 +4,7 @@
     <Description about="urn:mozilla:install-manifest">
         <em:id>cssxfire@cssxfire</em:id>
         <em:name>CSS-X-Fire</em:name>
-        <em:version>1.38</em:version>
+        <em:version>1.40</em:version>
         <em:creator>Ronnie Kolehmainen</em:creator>
         <em:description>Edit IntelliJ IDEA project CSS files directly from FireBug</em:description>
         <em:homepageURL>https://github.com/zolotov/css-x-fire</em:homepageURL>
