@@ -7,8 +7,13 @@
     ]]></description>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="alexander.zolotov@jetbrains.com">JetBrains</vendor>
     <change-notes><![CDATA[
-        <ul>1.40
+        <ul>1.41
             <li>Compatibility with 2016.1.</li>
+        </ul>
+        <ul>1.40
+            <li>Signed extension</li>
+            <li>Fixed applying particular style</li>
+            <li>Fixed keyboard shortcuts on Mac</li>
         </ul>
         <ul>1.39
             <li>Compatibility with 141.* builds.</li>
@@ -212,57 +217,57 @@
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove selected change"
                 description="Removes the selected change from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Remove">
-            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Remove"
+                use-shortcut-of="$Delete">
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySingle"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply selected change"
                 description="Applies the selected change from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Import">
-            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Import"
+                use-shortcut-of="Generate">
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteSelector"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in selector"
                 description="Removes all changes from selected CSS selector from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Remove">
-            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Remove"
+                use-shortcut-of="$Delete">
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplySelector"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in selector"
                 description="Applies all changes from selected CSS selector from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Import">
-            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Import"
+                use-shortcut-of="Generate">
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteFile"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in file"
                 description="Removes all changes from selected file from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Remove">
-            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Remove"
+                use-shortcut-of="$Delete">
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplyFile"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in file"
                 description="Applies all changes from selected file from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Import">
-            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Import"
+                use-shortcut-of="Generate">
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.DeleteDirectory"
                 class="com.github.cssxfire.action.DeleteNode"
                 text="Remove all changes in directory"
                 description="Removes all changes from selected directory from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Remove">
-            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Remove"
+                use-shortcut-of="$Delete">
         </action>
         <action id="IncomingChanges.DeclarationNodePopup.ApplyDirectory"
                 class="com.github.cssxfire.action.ApplyNode"
                 text="Apply all changes in directory"
                 description="Applies all changes from selected directory from the incoming changelist"
-                icon="AllIcons.ToolbarDecorator.Import">
-            <keyboard-shortcut first-keystroke="INSERT" keymap="$default"/>
+                icon="AllIcons.ToolbarDecorator.Import"
+                use-shortcut-of="Generate">
         </action>
 
         <group id="IncomingChanges.DeclarationNodePopup.Single.Invalid" text="" popup="true">
