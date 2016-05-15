@@ -1,0 +1,26 @@
+{
+  "title": "CSS-X-Fire",
+  "name": "css-x-fire",
+  "version": "1.40.0",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-exec": "~0.4.7",
+    "grunt-contrib-compress": "1.2.0",
+    "jpm": "mozilla-jetpack/jpm"
+  },
+  "contributors": [
+    {
+      "name": "Alexander Zolotov",
+      "email": "alexander.zolotov@jetbrains.com"
+    }
+  ],
+  "license": "Apache2",
+  "repository": {
+    "type": "git",
+    "url": "github.com/zolotov/css-x-fire"
+  },
+  "engines": {
+    "firefox": ">=36",
+    "fennec": ">=36"
+  }
+}

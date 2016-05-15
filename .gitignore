@@ -1,6 +1,7 @@
 /build/
 .gradle/
-node_modules/
+cssxfire/node_modules/
+cssxfire/dist/
 
 .idea/workspace.xml
 .idea/modules.xml

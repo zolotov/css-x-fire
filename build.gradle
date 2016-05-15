@@ -1,30 +1,24 @@
 plugins {
   id 'org.jetbrains.intellij' version "0.0.43"
-  id "com.moowork.node" version "0.12"
 }
 
 version = "${version}.$buildNumber"
-
-node {
-  version = '4.4.3'
-  download = true
-}
 
 apply plugin: 'java'
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
-def generatedExtension = "$buildDir/extension"
+def extensionDir = file("$buildDir/tmp/extension")
 sourceSets {
   main {
     java.srcDirs 'src', 'gen'
     resources.srcDir 'resources'
-    output.dir(generatedExtension, builtBy: 'buildExtension')
   }
 }
 
 apply plugin: 'org.jetbrains.intellij'
+
 intellij {
   version ideaVersion
   pluginName 'Css-X-Fire'
@@ -43,22 +37,4 @@ idea {
     jdkName = javaVersion
     languageLevel = javaVersion
   }
-}
-
-task buildExtension(type: Zip, group: 'build') {
-  from "$projectDir/cssxfire/src"
-  destinationDir = file("$generatedExtension/com/github/cssxfire/www/")
-  archiveName = 'cssxfire.xpi'
-}
-
-task installJpm(type: NpmTask, group: 'extension') {
-  args = ['install', 'git+https://git@github.com/mozilla-jetpack/jpm.git']
-  //should be replace with args = ['install', 'jpm'] after 1.0.8 (https://github.com/mozilla-jetpack/jpm/issues/458)
-}
-
-task signExtension(type: NodeTask, group: 'build', dependsOn: [buildExtension, installJpm]) {
-  def extension = buildExtension.outputs.files.singleFile
-  println 'Signing $extension'
-  script = file('node_modules/.bin/jpm')
-  args = ['sign', '--api-key', AMO_API_KEY, '--api-secret', AMO_API_SECRET, '--xpi', extension]
 }
