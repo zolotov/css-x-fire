@@ -9,10 +9,9 @@ sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
-def extensionDir = file("$buildDir/tmp/extension")
 sourceSets {
   main {
-    java.srcDirs 'src', 'gen'
+    java.srcDirs 'src'
     resources.srcDir 'resources'
   }
 }
