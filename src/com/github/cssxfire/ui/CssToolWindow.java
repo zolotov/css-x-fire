@@ -32,6 +32,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -56,7 +57,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewModel, Disposable, DataProvider {
+public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewModel, Disposable, DataProvider, DumbAware {
   private static final DataKey<CssToolWindow> CSS_X_FIRE_TOOL_WINDOW_KEY = DataKey.create("css.x.fire.tool.window");
   
   private final CssChangesTreeModel myTreeModel;
