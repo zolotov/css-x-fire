@@ -20,6 +20,7 @@ apply plugin: 'org.jetbrains.intellij'
 
 intellij {
   version ideaVersion
+  type 'IU'
   pluginName 'Css-X-Fire'
   plugins 'CSS', 'less', 'sass'
   downloadSources Boolean.valueOf(sources)

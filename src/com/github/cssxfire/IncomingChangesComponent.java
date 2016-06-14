@@ -18,7 +18,6 @@ package com.github.cssxfire;
 
 import com.github.cssxfire.filter.ReduceStrategyManager;
 import com.github.cssxfire.tree.CssDeclarationPath;
-import com.github.cssxfire.tree.TreeViewModel;
 import com.github.cssxfire.ui.CssToolWindow;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
@@ -152,7 +151,7 @@ public class IncomingChangesComponent implements ProjectComponent {
             return;
         }
         PsiManager.getInstance(project).removePsiTreeChangeListener(myListener);
-        getTreeViewModel().clearTree();
+        cssToolWindow.clearTree();
         CssXFireConnector.getInstance().removeProjectComponent(this);
         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOLWINDOW_ID);
     }
@@ -183,11 +182,6 @@ public class IncomingChangesComponent implements ProjectComponent {
                 }
             }
         });
-    }
-
-    @NotNull
-    public TreeViewModel getTreeViewModel() {
-        return cssToolWindow;
     }
 
     public void handleEvent(final FirebugEvent event) {

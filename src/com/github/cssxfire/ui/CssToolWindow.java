@@ -42,6 +42,7 @@ import com.intellij.ui.SideBorder;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.ui.DialogUtil;
 import com.intellij.util.ui.UIUtil;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,13 +56,20 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewModel, Disposable {
+public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewModel, Disposable, DataProvider {
+  private static final DataKey<CssToolWindow> CSS_X_FIRE_TOOL_WINDOW_KEY = DataKey.create("css.x.fire.tool.window");
+  
   private final CssChangesTreeModel myTreeModel;
   private final JTree myTree;
   private final Project myProject;
   private final JButton myCancelButton;
   private final JButton myApplyButton;
 
+  @Nullable
+  public static CssToolWindow getToolWindow(final AnActionEvent e) {
+    return e.getData(CSS_X_FIRE_TOOL_WINDOW_KEY);
+  }
+  
   public CssToolWindow(final Project project) {
     super(false, true);
     myProject = project;
@@ -153,6 +161,15 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
         myCancelButton.setEnabled(hasPendingChanges);
       }
     });
+  }
+
+  @Nullable
+  @Override
+  public Object getData(@NonNls String dataId) {
+    if (CSS_X_FIRE_TOOL_WINDOW_KEY.is(dataId)) {
+      return this;
+    }
+    return super.getData(dataId);
   }
 
   private static JButton createButton(@NotNull String name) {
@@ -286,6 +303,10 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
   // TreeViewModel
   //
 
+  public boolean hasSelectedNodes() {
+      return myTree.getSelectionPath() != null;
+  }
+  
   public void applySelectedNode() {
     TreePath selectedPath = myTree.getSelectionPath();
     if (selectedPath == null) {

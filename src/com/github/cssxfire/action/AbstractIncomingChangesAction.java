@@ -16,11 +16,9 @@
 
 package com.github.cssxfire.action;
 
-import com.github.cssxfire.IncomingChangesComponent;
+import com.github.cssxfire.ui.CssToolWindow;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -33,14 +31,9 @@ public abstract class AbstractIncomingChangesAction extends AnAction {
     super(text, description, icon);
   }
 
-  @Nullable
-  protected IncomingChangesComponent getIncomingChangesComponent(AnActionEvent event) {
-    Project project = CommonDataKeys.PROJECT.getData(event.getDataContext());
-    return project != null ? IncomingChangesComponent.getInstance(project) : null;
-  }
-
   @Override
   public void update(AnActionEvent e) {
-    e.getPresentation().setEnabled(getIncomingChangesComponent(e) != null);
+    CssToolWindow toolWindow = CssToolWindow.getToolWindow(e);
+    e.getPresentation().setEnabled(toolWindow != null && toolWindow.hasSelectedNodes());
   }
 }

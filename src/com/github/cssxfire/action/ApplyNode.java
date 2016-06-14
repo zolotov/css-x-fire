@@ -16,16 +16,15 @@
 
 package com.github.cssxfire.action;
 
-import com.github.cssxfire.IncomingChangesComponent;
+import com.github.cssxfire.ui.CssToolWindow;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 public class ApplyNode extends AbstractIncomingChangesAction {
     @Override
     public void actionPerformed(AnActionEvent event) {
-        IncomingChangesComponent changesComponent = getIncomingChangesComponent(event);
-        if (changesComponent == null) {
-            return;
+        CssToolWindow toolWindow = CssToolWindow.getToolWindow(event);
+        if (toolWindow != null) {
+            toolWindow.applySelectedNode();
         }
-        changesComponent.getTreeViewModel().applySelectedNode();
     }
 }

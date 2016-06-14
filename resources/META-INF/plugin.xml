@@ -7,6 +7,9 @@
     ]]></description>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="alexander.zolotov@jetbrains.com">JetBrains</vendor>
     <change-notes><![CDATA[
+        <ul>1.43
+            <li>Fix bug with backspace in popups.</li>
+        </ul>
         <ul>1.41
             <li>Compatibility with 2016.1.</li>
         </ul>
