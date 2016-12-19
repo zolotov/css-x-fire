@@ -24,6 +24,11 @@ intellij {
   pluginName 'Css-X-Fire'
   plugins 'CSS', 'less', 'sass'
   downloadSources Boolean.valueOf(sources)
+  publish {
+    username publishUsername
+    password publishPassword
+    pluginId '5348'
+  }
 }
 
 apply plugin: 'idea'
