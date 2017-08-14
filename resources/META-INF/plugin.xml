@@ -7,6 +7,12 @@
     ]]></description>
     <vendor url="https://github.com/ronniekk/css-x-fire" email="alexander.zolotov@jetbrains.com">JetBrains</vendor>
     <change-notes><![CDATA[
+        <ul>1.47
+            <li>Compatibility with 2017.2</li>
+        </ul>
+        <ul>1.46
+            <li>Compatibility with 2017.1</li>
+        </ul>
         <ul>1.45
             <li>Compatibility with 2016.3</li>
         </ul>
