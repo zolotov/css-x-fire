@@ -1,5 +1,5 @@
 plugins {
-  id 'org.jetbrains.intellij' version "0.2.16"
+  id 'org.jetbrains.intellij' version "0.2.17"
 }
 
 version = "${version}.$buildNumber"
@@ -24,11 +24,12 @@ intellij {
   pluginName 'Css-X-Fire'
   plugins 'CSS', 'less', 'sass'
   downloadSources Boolean.valueOf(sources)
-  publish {
-    username publishUsername
-    password publishPassword
-    pluginId '5348'
-  }
+}
+
+publishPlugin {
+  username publishUsername
+  password publishPassword
+  pluginId '5348'
 }
 
 apply plugin: 'idea'
