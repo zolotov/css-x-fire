@@ -77,15 +77,13 @@ public class CssUtils {
 
     @Nullable
     public static CssRulesetList findFirstCssRulesetList(@NotNull PsiFile file) {
-        final Ref<CssRulesetList> ref = new Ref<CssRulesetList>();
-        PsiTreeUtil.processElements(file, new PsiElementProcessor() {
-            public boolean execute(@NotNull PsiElement element) {
-                if (element instanceof CssRulesetList) {
-                    ref.set((CssRulesetList) element);
-                    return false;
-                }
-                return true;
+        final Ref<CssRulesetList> ref = Ref.create();
+        PsiTreeUtil.processElements(file, element -> {
+            if (element instanceof CssRulesetList) {
+                ref.set((CssRulesetList) element);
+                return false;
             }
+            return true;
         });
         return ref.get();
     }
@@ -119,16 +117,14 @@ public class CssUtils {
             return null; // not an explicit variable reference
         }
 
-        final Ref<PsiElement> resolved = new Ref<PsiElement>(null);
-        PsiTreeUtil.processElements(terms[0], new PsiElementProcessor() {
-            public boolean execute(@NotNull PsiElement element) {
-                PsiElement[] targets = GotoDeclarationResolver.INSTANCE.getGotoDeclarationTargets(element, null);
-                if (targets != null && targets.length == 1) {
-                    resolved.set(targets[0]);
-                    return false;
-                }
-                return true;
+        final Ref<PsiElement> resolved = Ref.create();
+        PsiTreeUtil.processElements(terms[0], element -> {
+            PsiElement[] targets = GotoDeclarationResolver.INSTANCE.getGotoDeclarationTargets(element, null);
+            if (targets != null && targets.length == 1) {
+                resolved.set(targets[0]);
+                return false;
             }
+            return true;
         });
         return resolved.get();
     }
@@ -146,19 +142,17 @@ public class CssUtils {
             }
         }
         if (isDynamicCssLanguage(block) && CssXFireSettings.getInstance(block.getProject()).isResolveMixins()) {
-            return PsiTreeUtil.processElements(block, new PsiElementProcessor() {
-                public boolean execute(@NotNull PsiElement element) {
-                    PsiElement[] targets = GotoDeclarationResolver.INSTANCE.getGotoDeclarationTargets(element, null);
-                    if (targets != null && targets.length == 1) {
-                        PsiElement resolved = targets[0];
-                        if (resolved instanceof CssRuleset) {
-                            if (!processCssDeclarations(((CssRuleset) resolved).getBlock(), declarationProcessor)) {
-                                return false;
-                            }
+            return PsiTreeUtil.processElements(block, element -> {
+                PsiElement[] targets = GotoDeclarationResolver.INSTANCE.getGotoDeclarationTargets(element, null);
+                if (targets != null && targets.length == 1) {
+                    PsiElement resolved = targets[0];
+                    if (resolved instanceof CssRuleset) {
+                        if (!processCssDeclarations(((CssRuleset) resolved).getBlock(), declarationProcessor)) {
+                            return false;
                         }
                     }
-                    return true;
                 }
+                return true;
             });
         }
         return true;

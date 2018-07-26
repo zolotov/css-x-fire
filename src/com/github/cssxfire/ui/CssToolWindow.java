@@ -53,7 +53,10 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -113,19 +116,9 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
     buttonsPanel.setBorder(IdeBorderFactory.createBorder(SideBorder.TOP));
 
     myCancelButton = createButton("&Cancel changes");
-    myCancelButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(@NotNull ActionEvent event) {
-        clearTree();
-      }
-    });
+    myCancelButton.addActionListener(event -> clearTree());
     myApplyButton = createButton("&Apply changes");
-    myApplyButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(@NotNull ActionEvent event) {
-        applyPending();
-      }
-    });
+    myApplyButton.addActionListener(event -> applyPending());
     buttonsPanel.add(myCancelButton);
     buttonsPanel.add(myApplyButton);
 
@@ -271,31 +264,25 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
   }
 
   private void executeCommand(final Runnable command) {
-    CommandProcessor.getInstance().executeCommand(myProject, new Runnable() {
-      public void run() {
-        ApplicationManager.getApplication().runWriteAction(command);
-      }
-    }, "Apply CSS", "CSS");
-
+    CommandProcessor.getInstance()
+      .executeCommand(myProject, () -> ApplicationManager.getApplication().runWriteAction(command), "Apply CSS", "CSS");
     FileDocumentManager.getInstance().saveAllDocuments();
   }
 
   private void applyPending() {
-    executeCommand(new Runnable() {
-      public void run() {
-        CssTreeNode root = (CssTreeNode)myTreeModel.getRoot();
-        CssTreeNode leaf;
+    executeCommand(() -> {
+      CssTreeNode root = (CssTreeNode)myTreeModel.getRoot();
+      CssTreeNode leaf;
 
-        while (!(leaf = (CssTreeNode)root.getFirstLeaf()).isRoot()) {
-          if (leaf instanceof CssDeclarationNode) {
-            CssDeclarationNode declarationNode = (CssDeclarationNode)leaf;
-            declarationNode.applyToCode();
-          }
-          myTreeModel.removeNodeFromParent(leaf);
+      while (!(leaf = (CssTreeNode)root.getFirstLeaf()).isRoot()) {
+        if (leaf instanceof CssDeclarationNode) {
+          CssDeclarationNode declarationNode = (CssDeclarationNode)leaf;
+          declarationNode.applyToCode();
         }
-
-        myTreeModel.nodeStructureChanged(root);
+        myTreeModel.removeNodeFromParent(leaf);
       }
+
+      myTreeModel.nodeStructureChanged(root);
     });
   }
 
@@ -315,28 +302,24 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
     }
     Object source = selectedPath.getLastPathComponent();
     if (source instanceof CssDirectoryNode || source instanceof CssFileNode || source instanceof CssSelectorNode) {
-      final Collection<CssDeclarationNode> declarations = new ArrayList<CssDeclarationNode>();
+      final Collection<CssDeclarationNode> declarations = new ArrayList<>();
       for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode)source)) {
         if (leaf instanceof CssDeclarationNode) {
           declarations.add((CssDeclarationNode)leaf);
         }
       }
-      executeCommand(new Runnable() {
-        public void run() {
-          for (CssDeclarationNode declarationNode : declarations) {
-            declarationNode.applyToCode();
-            deleteNode(declarationNode);
-          }
+      executeCommand(() -> {
+        for (CssDeclarationNode declarationNode : declarations) {
+          declarationNode.applyToCode();
+          deleteNode(declarationNode);
         }
       });
     }
     else if (source instanceof CssDeclarationNode) {
       final CssDeclarationNode declarationNode = (CssDeclarationNode)source;
-      executeCommand(new Runnable() {
-        public void run() {
-          declarationNode.applyToCode();
-          deleteSelectedNode();
-        }
+      executeCommand(() -> {
+        declarationNode.applyToCode();
+        deleteSelectedNode();
       });
     }
   }
@@ -348,7 +331,7 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
     }
     Object source = selectedPath.getLastPathComponent();
     if (source instanceof CssDirectoryNode || source instanceof CssFileNode || source instanceof CssSelectorNode) {
-      final Collection<CssDeclarationNode> declarations = new ArrayList<CssDeclarationNode>();
+      final Collection<CssDeclarationNode> declarations = new ArrayList<>();
       for (CssTreeNode leaf : TreeUtils.iterateLeafs((CssTreeNode)source)) {
         if (leaf instanceof CssDeclarationNode) {
           declarations.add((CssDeclarationNode)leaf);
@@ -426,7 +409,7 @@ public class CssToolWindow extends SimpleToolWindowPanel implements TreeViewMode
 
   private static class MyTreeCellRenderer extends NodeRenderer {
     @Override
-    public void customizeCellRenderer(JTree tree,
+    public void customizeCellRenderer(@NotNull JTree tree,
                                       Object value,
                                       boolean selected,
                                       boolean expanded,

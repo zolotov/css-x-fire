@@ -23,53 +23,54 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 public class CssNewDeclarationForMediumNode extends CssNewDeclarationNode {
-    protected CssNewDeclarationForMediumNode(@NotNull CssDeclaration cssDeclaration, @NotNull CssMediumList destinationElement, boolean deleted) {
-        super(cssDeclaration, destinationElement, deleted);
+  protected CssNewDeclarationForMediumNode(@NotNull CssDeclaration cssDeclaration,
+                                           @NotNull CssMediumList destinationElement,
+                                           boolean deleted) {
+    super(cssDeclaration, destinationElement, deleted);
+  }
+
+  private CssBlock ensureSelectorTargetExists() {
+    CssSelectorNode selectorNode = getCssSelectorNode();
+    String selector = selectorNode.getSelector();
+
+    PsiElement element = destinationBlock;
+    while ((element = element.getNextSibling()) != null) {
+      if (element instanceof CssRuleset) {
+        CssRuleset cssRuleset = (CssRuleset)element;
+        CssSelectorList selectorList = cssRuleset.getSelectorList();
+        if (selectorList != null && selector.equals(selectorList.getText())) {
+          return cssRuleset.getBlock();
+        }
+      }
     }
 
-    private CssBlock ensureSelectorTargetExists() {
-        CssSelectorNode selectorNode = getCssSelectorNode();
-        String selector = selectorNode.getSelector();
+    // not found, which is also expected... we have to create a new one
 
-        PsiElement element = destinationBlock;
-        while ((element = element.getNextSibling()) != null) {
-            if (element instanceof CssRuleset) {
-                CssRuleset cssRuleset = (CssRuleset) element;
-                CssSelectorList selectorList = cssRuleset.getSelectorList();
-                if (selectorList != null && selector.equals(selectorList.getText())) {
-                    return cssRuleset.getBlock();
-                }
-            }
-        }
-
-        // not found, which is also expected... we have to create a new one
-
-        PsiElement parent = destinationBlock.getParent();
-        // if "destinationBlock" is a CssMediumList its parent must be a CssMedia element
-        CssRuleset ruleset = CssUtils.createRuleset(destinationBlock.getProject(), selector);
-        PsiElement psiElement = parent.addAfter(ruleset, destinationBlock);
-        if (psiElement instanceof CssRuleset) {
-            return ((CssRuleset) psiElement).getBlock();
-        }
-
-        // we really shouldn't get here TODO: raise some error?
-        return ruleset.getBlock();
+    PsiElement parent = destinationBlock.getParent();
+    // if "destinationBlock" is a CssMediumList its parent must be a CssMedia element
+    CssRuleset ruleset = CssUtils.createRuleset(destinationBlock.getProject(), selector);
+    PsiElement psiElement = parent.addAfter(ruleset, destinationBlock);
+    if (psiElement instanceof CssRuleset) {
+      return ((CssRuleset)psiElement).getBlock();
     }
 
-    @Override
-    public void applyToCode() {
-        try {
-            if (isValid() && !deleted) {
-                CssBlock cssBlock = ensureSelectorTargetExists();
+    // we really shouldn't get here TODO: raise some error?
+    return ruleset.getBlock();
+  }
 
-                CssDeclaration[] declarations = cssBlock.getDeclarations();
-                CssDeclaration anchor = declarations != null && declarations.length > 0
-                        ? declarations[declarations.length - 1]
-                        : null;
-                cssBlock.addDeclaration(property, value + (important ? " !important" : ""), anchor);
-            }
-        } catch (IncorrectOperationException e) {
-            e.printStackTrace();
-        }
+  @Override
+  public void applyToCode() {
+    try {
+      if (isValid() && !deleted) {
+        CssBlock cssBlock = ensureSelectorTargetExists();
+
+        CssDeclaration[] declarations = cssBlock.getDeclarations();
+        CssDeclaration anchor = declarations.length > 0 ? declarations[declarations.length - 1] : null;
+        cssBlock.addDeclaration(property, value + (important ? " !important" : ""), anchor);
+      }
     }
+    catch (IncorrectOperationException e) {
+      e.printStackTrace();
+    }
+  }
 }

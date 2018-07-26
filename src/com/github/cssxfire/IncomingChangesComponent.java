@@ -101,17 +101,15 @@ public class IncomingChangesComponent implements ProjectComponent {
             final String message = previousVersion == null
                     ? "CSS-X-Fire has been installed.\n\nPress Yes to install the browser plugin."
                     : "CSS-X-Fire has been upgraded from " + previousVersion + " to " + currentVersion + ".\n\nPress Yes to update the browser plugin.";
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                public void run() {
-                    int res = Messages.showYesNoDialog(project, message, "CSS-X-Fire", null);
-                    if (res == 0) {
-                        new AnAction("Help", "Show the CSS-X-Fire help page", AllIcons.Actions.Help) {
-                          @Override
-                          public void actionPerformed(AnActionEvent anActionEvent) {
-                            CssUtils.openInFirefox("http://localhost:6776/files/about.html");
-                          }
-                        }.actionPerformed(null);
-                    }
+            ApplicationManager.getApplication().invokeLater(() -> {
+                int res = Messages.showYesNoDialog(project, message, "CSS-X-Fire", null);
+                if (res == 0) {
+                    new AnAction("Help", "Show the CSS-X-Fire help page", AllIcons.Actions.Help) {
+                      @Override
+                      public void actionPerformed(AnActionEvent anActionEvent) {
+                        CssUtils.openInFirefox("http://localhost:6776/files/about.html");
+                      }
+                    }.actionPerformed(null);
                 }
             });
         }
@@ -157,43 +155,39 @@ public class IncomingChangesComponent implements ProjectComponent {
     }
 
     public void processRule(final FirebugChangesBean changesBean) {
-        DumbService.getInstance(project).smartInvokeLater(new Runnable() {
-            public void run() {
-                if (!project.isInitialized()) {
-                    return;
-                }
+        DumbService.getInstance(project).smartInvokeLater(() -> {
+            if (!project.isInitialized()) {
+                return;
+            }
 
-                // Apply routes
-                FirebugChangesBean routedChangesBean = changesBean.applyRoutes(project);
+            // Apply routes
+            FirebugChangesBean routedChangesBean = changesBean.applyRoutes(project);
 
-                // Get all possible candidates from the style info provided by Firebug
-                final Collection<CssDeclarationPath> candidates = IncomingChangesProcessor.getProjectCandidates(project, routedChangesBean);
+            // Get all possible candidates from the style info provided by Firebug
+            final Collection<CssDeclarationPath> candidates = IncomingChangesProcessor.getProjectCandidates(project, routedChangesBean);
 
-                // Reduce results if any of the filter options are checked
-                ReduceStrategyManager.getStrategy(project, routedChangesBean).reduce(candidates);
+            // Reduce results if any of the filter options are checked
+            ReduceStrategyManager.getStrategy(project, routedChangesBean).reduce(candidates);
 
-                // Render remaining candidates in the "Incoming changes" tree view
-                for (CssDeclarationPath candidate : candidates) {
-                    cssToolWindow.getTreeModel().intersect(candidate);
-                }
+            // Render remaining candidates in the "Incoming changes" tree view
+            for (CssDeclarationPath candidate : candidates) {
+                cssToolWindow.getTreeModel().intersect(candidate);
+            }
 
-                if (CssXFireSettings.getInstance(project).isAutoExpand()) {
-                    cssToolWindow.expandAll();
-                }
+            if (CssXFireSettings.getInstance(project).isAutoExpand()) {
+                cssToolWindow.expandAll();
             }
         });
     }
 
     public void handleEvent(final FirebugEvent event) {
-        DumbService.getInstance(project).smartInvokeLater(new Runnable() {
-            public void run() {
-                if (!project.isInitialized()) {
-                    return;
-                }
+        DumbService.getInstance(project).smartInvokeLater(() -> {
+            if (!project.isInitialized()) {
+                return;
+            }
 
-                if ("refresh".equals(event.getName()) && CssXFireSettings.getInstance(project).isAutoClear()) {
-                    cssToolWindow.clearTree();
-                }
+            if ("refresh".equals(event.getName()) && CssXFireSettings.getInstance(project).isAutoClear()) {
+                cssToolWindow.clearTree();
             }
         });
     }

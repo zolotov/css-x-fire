@@ -29,8 +29,8 @@ import java.util.Set;
 
 public abstract class CssResolveProcessor implements PsiElementProcessor {
     protected final String name;
-    protected final Ref<PsiElement> result = new Ref<PsiElement>(null);
-    private final Set<CssImport> imports = new HashSet<CssImport>();
+    protected final Ref<PsiElement> result = Ref.create();
+    private final Set<CssImport> imports = new HashSet<>();
 
     protected CssResolveProcessor(String name) {
         this.name = name;

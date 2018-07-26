@@ -34,8 +34,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Project search cache.
  */
 public class SearchProcessorCache implements ProjectComponent {
-    private final Map<String, CssSelectorSearchProcessor> selectorProcessorCache = new ConcurrentHashMap<String, CssSelectorSearchProcessor>();
-    private final Map<String, CssMediaSearchProcessor> mediaProcessorCache = new ConcurrentHashMap<String, CssMediaSearchProcessor>();
+    private final Map<String, CssSelectorSearchProcessor> selectorProcessorCache = new ConcurrentHashMap<>();
+    private final Map<String, CssMediaSearchProcessor> mediaProcessorCache = new ConcurrentHashMap<>();
 
     private final GlobalSearchScope searchScope;
     private final short searchContext = UsageSearchContext.ANY;
@@ -50,7 +50,7 @@ public class SearchProcessorCache implements ProjectComponent {
      * Helper
      *
      * @param project the project
-     * @return the {@link com.github.cssxfire.SearchProcessorCache} instance tied to the project
+     * @return the {@link SearchProcessorCache} instance tied to the project
      */
     public static SearchProcessorCache getInstance(Project project) {
         return project.getComponent(SearchProcessorCache.class);
@@ -66,7 +66,7 @@ public class SearchProcessorCache implements ProjectComponent {
      * been processed with candidates in the project.
      *
      * @param selector the selector to search for
-     * @return a {@link com.github.cssxfire.CssSelectorSearchProcessor} instance
+     * @return a {@link CssSelectorSearchProcessor} instance
      */
     @NotNull
     public CssSelectorSearchProcessor getSelectorSearchProcessor(@NotNull String selector) {
@@ -89,7 +89,7 @@ public class SearchProcessorCache implements ProjectComponent {
      * been processed with candidates in the project.
      *
      * @param media the media query to search for
-     * @return a {@link com.github.cssxfire.CssMediaSearchProcessor} instance
+     * @return a {@link CssMediaSearchProcessor} instance
      */
     @NotNull
     public CssMediaSearchProcessor getMediaSearchProcessor(@NotNull String media) {
@@ -136,32 +136,32 @@ public class SearchProcessorCache implements ProjectComponent {
      */
     private PsiTreeChangeListener myCacheInvalidator = new PsiTreeChangeAdapter() {
         @Override
-        public void childAdded(PsiTreeChangeEvent event) {
+        public void childAdded(@NotNull PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childRemoved(PsiTreeChangeEvent event) {
+        public void childRemoved(@NotNull PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childReplaced(PsiTreeChangeEvent event) {
+        public void childReplaced(@NotNull PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childMoved(PsiTreeChangeEvent event) {
+        public void childMoved(@NotNull PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void childrenChanged(PsiTreeChangeEvent event) {
+        public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
 
         @Override
-        public void propertyChanged(PsiTreeChangeEvent event) {
+        public void propertyChanged(@NotNull PsiTreeChangeEvent event) {
             SearchProcessorCache.this.clearCaches();
         }
     };

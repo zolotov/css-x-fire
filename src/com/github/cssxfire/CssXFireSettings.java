@@ -33,8 +33,8 @@ import java.util.List;
 @State(
   name = "CssXFireSettings",
   storages = {
-    @Storage(id = "default", file = "$PROJECT_FILE$"),
-    @Storage(id = "CSS-X-Fire", file = "$PROJECT_CONFIG_DIR$/cssxfire.xml", scheme = StorageScheme.DIRECTORY_BASED)
+    @Storage("$PROJECT_FILE$"),
+    @Storage(value = "$PROJECT_CONFIG_DIR$/cssxfire.xml", scheme = StorageScheme.DIRECTORY_BASED)
   }
 )
 public class CssXFireSettings implements PersistentStateComponent<Element> {
@@ -48,11 +48,7 @@ public class CssXFireSettings implements PersistentStateComponent<Element> {
   private boolean resolveVariables = true;
   private boolean resolveMixins = true;
 
-  private static final Comparator<VirtualFile> FILE_COMPARATOR = new Comparator<VirtualFile>() {
-    public int compare(@NotNull final VirtualFile o1, @NotNull final VirtualFile o2) {
-      return o1.getPath().compareTo(o2.getPath());
-    }
-  };
+  private static final Comparator<VirtualFile> FILE_COMPARATOR = Comparator.comparing(VirtualFile::getPath);
 
   @NotNull
   public static CssXFireSettings getInstance(@NotNull Project project) {
@@ -132,7 +128,7 @@ public class CssXFireSettings implements PersistentStateComponent<Element> {
     Element general = new Element("general");
     Element strategy = new Element("strategy");
     Element routes = new Element("routes");
-    List<VirtualFile> files = new ArrayList<VirtualFile>(this.routes.getMappings().keySet());
+    List<VirtualFile> files = new ArrayList<>(this.routes.getMappings().keySet());
     ContainerUtil.quickSort(files, FILE_COMPARATOR);
     for (VirtualFile file : files) {
       String route = this.routes.getMappings().get(file);
@@ -157,8 +153,8 @@ public class CssXFireSettings implements PersistentStateComponent<Element> {
     return root;
   }
 
-  public void loadState(Element root) {
-    HashMap<VirtualFile, String> routeMappings = new HashMap<VirtualFile, String>();
+  public void loadState(@NotNull Element root) {
+    HashMap<VirtualFile, String> routeMappings = new HashMap<>();
     Element routes = root.getChild("routes");
     if (routes != null) {
       List<Element> files = routes.getChildren("file");

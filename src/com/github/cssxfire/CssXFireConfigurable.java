@@ -16,7 +16,6 @@
 
 package com.github.cssxfire;
 
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
@@ -32,13 +31,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -85,12 +78,7 @@ public class CssXFireConfigurable implements SearchableConfigurable {
     myFileNameReduceCb = new JBCheckBox("Match filename");
     myRoutesReduceCb = new JBCheckBox("Use routes");
     myRoutesTable = new FileTreeTable(myProject);
-    myRoutesReduceCb.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(@NotNull ChangeEvent event) {
-        UIUtil.setEnabled(myRoutesTable, myRoutesReduceCb.isSelected(), true);
-      }
-    });
+    myRoutesReduceCb.addChangeListener(event -> UIUtil.setEnabled(myRoutesTable, myRoutesReduceCb.isSelected(), true));
     mySetRootButton = new JButton("Set as web root");
 
     final JPanel reduceStrategyPanel = new FormBuilder() {
@@ -115,16 +103,8 @@ public class CssXFireConfigurable implements SearchableConfigurable {
       .getPanel();
     reduceStrategyPanel.setBorder(IdeBorderFactory.createTitledBorder("Reduce strategy"));
 
-    myRoutesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-      public void valueChanged(@NotNull ListSelectionEvent e) {
-        updateWebRootButton();
-      }
-    });
-    mySetRootButton.addActionListener(new ActionListener() {
-      public void actionPerformed(@NotNull ActionEvent e) {
-        updateWebRoot();
-      }
-    });
+    myRoutesTable.getSelectionModel().addListSelectionListener(e -> updateWebRootButton());
+    mySetRootButton.addActionListener(e -> updateWebRoot());
 
     JPanel panel = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
@@ -161,7 +141,7 @@ public class CssXFireConfigurable implements SearchableConfigurable {
       Map<VirtualFile, String> currentValues = myRoutesTable.getValues();
       Object file = myRoutesTable.getValueAt(selectedRow, 0);
       if (file instanceof VirtualFile) {
-        for (VirtualFile key : new HashSet<VirtualFile>(currentValues.keySet())) {
+        for (VirtualFile key : new HashSet<>(currentValues.keySet())) {
           if ("/".equals(currentValues.get(key))) {
             currentValues.remove(key);
           }
@@ -197,7 +177,7 @@ public class CssXFireConfigurable implements SearchableConfigurable {
            || settings.isResolveMixins() != myResolveMixinsCb.isSelected();
   }
 
-  public void apply() throws ConfigurationException {
+  public void apply() {
     CssXFireSettings settings = CssXFireSettings.getInstance(myProject);
     settings.getRoutes().setMappings(myRoutesTable.getValues());
     settings.setAutoClear(myAutoClearCb.isSelected());

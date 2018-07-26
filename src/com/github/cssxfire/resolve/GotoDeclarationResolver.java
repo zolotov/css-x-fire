@@ -49,7 +49,7 @@ public class GotoDeclarationResolver implements GotoDeclarationHandler {
      * @see CssUtils#resolveVariableAssignment(com.intellij.psi.css.CssDeclaration)
      */
     public static final GotoDeclarationResolver INSTANCE = new GotoDeclarationResolver();
-    public static final PsiElement[] EMPTY_TARGETS = new PsiElement[0];
+    private static final PsiElement[] EMPTY_TARGETS = new PsiElement[0];
 
     public PsiElement[] getGotoDeclarationTargets(PsiElement element, Editor editor) {
         return getGotoDeclarationTargets(element, 0, editor);

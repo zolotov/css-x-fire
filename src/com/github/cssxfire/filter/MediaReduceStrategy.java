@@ -51,7 +51,7 @@ public class MediaReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
             return;
         }
 
-        List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
+        List<CssDeclarationPath> matches = new ArrayList<>();
         for (CssDeclarationPath candidate : candidates) {
             String candidateMedia = candidate.getSelectorNode().getMedia();
             if (StringUtils.equalsNormalizeWhitespace(media, candidateMedia)) {

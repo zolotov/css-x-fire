@@ -64,7 +64,7 @@ public class TreeUtils {
     }
 
     private static List<CssTreeNode> flatten(@NotNull CssTreeNode root) {
-        List<CssTreeNode> flattened = new ArrayList<CssTreeNode>();
+        List<CssTreeNode> flattened = new ArrayList<>();
         Enumeration enumeration = root.breadthFirstEnumeration();
         while (enumeration.hasMoreElements()) {
             flattened.add((CssTreeNode) enumeration.nextElement());
@@ -74,7 +74,7 @@ public class TreeUtils {
 
     public static int countLeafs(CssTreeNode root) {
         int numLeafs = 0;
-        for (CssTreeNode leaf : iterateLeafs(root)) {
+        for (CssTreeNode ignored : iterateLeafs(root)) {
             numLeafs++;
         }
         return numLeafs;
@@ -96,7 +96,7 @@ public class TreeUtils {
             return leafIterator;
         }
 
-        private class LeafIterator implements Iterator<CssTreeNode> {
+        private static class LeafIterator implements Iterator<CssTreeNode> {
             private Enumeration enumeration;
             private CssTreeNode next;
 

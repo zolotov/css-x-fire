@@ -26,7 +26,6 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.css.CssImport;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
-import com.intellij.psi.search.TextOccurenceProcessor;
 import com.intellij.psi.search.UsageSearchContext;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +46,7 @@ import java.util.HashSet;
  * </p>
  */
 public class CssResolveUtils {
-    private static final Key<Collection<String>> PROCESSED_PATHS = new Key<Collection<String>>("PROCESSED_PATHS");
+    private static final Key<Collection<String>> PROCESSED_PATHS = new Key<>("PROCESSED_PATHS");
 
     /**
      * Checks if the PSI tree in given root contains a PsiErrorElement.
@@ -62,7 +61,7 @@ public class CssResolveUtils {
     public static PsiElement resolveVariable(@NotNull PsiElement base, @NotNull String name) {
         CssResolveProcessor processor = CssPluginsFacade.getVariableProcessor(base, name);
         if (processor.executeInScope(base)) {
-            processFile(base.getContainingFile(), processor, ResolveState.initial().put(PROCESSED_PATHS, new HashSet<String>()));
+            processFile(base.getContainingFile(), processor, ResolveState.initial().put(PROCESSED_PATHS, new HashSet<>()));
         }
         return processor.getResult();
     }
@@ -71,7 +70,7 @@ public class CssResolveUtils {
     public static PsiElement resolveMixin(@NotNull PsiElement base, @NotNull String name) {
         CssResolveProcessor processor = CssPluginsFacade.getMixinProcessor(base, name);
         if (processor.executeInScope(base)) {
-            processFile(base.getContainingFile(), processor, ResolveState.initial().put(PROCESSED_PATHS, new HashSet<String>()));
+            processFile(base.getContainingFile(), processor, ResolveState.initial().put(PROCESSED_PATHS, new HashSet<>()));
         }
         return processor.getResult();
     }
@@ -99,26 +98,24 @@ public class CssResolveUtils {
         }
 
         // Recurse on files importing this file
-        CssUtils.getPsiSearchHelper(file.getProject()).processElementsWithWord(new TextOccurenceProcessor() {
-            public boolean execute(@NotNull PsiElement element, int offsetInElement) {
-                if (element.getParent().getParent() instanceof CssImport) {
-                    CssImport cssImport = (CssImport) element.getParent().getParent();
-                    String[] uris = cssImport.getUriStrings();
-                    for (String uri : uris) {
-                        if (uri != null && uri.endsWith(file.getName())) {
-                            PsiFile[] imports = cssImport.resolve();
-                            for (PsiFile importedFile : imports) {
-                                if (file == importedFile) {
-                                    if (!processFile(cssImport.getContainingFile(), processor, state)) {
-                                        return false;
-                                    }
+        CssUtils.getPsiSearchHelper(file.getProject()).processElementsWithWord((element, offsetInElement) -> {
+            if (element.getParent().getParent() instanceof CssImport) {
+                CssImport cssImport1 = (CssImport) element.getParent().getParent();
+                String[] uris = cssImport1.getUriStrings();
+                for (String uri : uris) {
+                    if (uri != null && uri.endsWith(file.getName())) {
+                        PsiFile[] imports = cssImport1.resolve();
+                        for (PsiFile importedFile : imports) {
+                            if (file == importedFile) {
+                                if (!processFile(cssImport1.getContainingFile(), processor, state)) {
+                                    return false;
                                 }
                             }
                         }
                     }
                 }
-                return true;
             }
+            return true;
         }, getResolveSearchScope(file), file.getName(), (short) (UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS), true);
 
         return true;

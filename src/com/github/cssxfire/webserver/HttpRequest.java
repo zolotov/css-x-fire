@@ -38,7 +38,7 @@ public class HttpRequest implements Runnable {
   private static final String EMPTY_STRING = "";
   private Socket socket;
 
-  public HttpRequest(Socket socket) throws Exception {
+  public HttpRequest(Socket socket) {
     this.socket = socket;
   }
 
@@ -57,8 +57,7 @@ public class HttpRequest implements Runnable {
     //Get references to sockets input and output streams
     InputStream is = this.socket.getInputStream();
     //Set up input stream filter
-    BufferedReader br = new BufferedReader(new InputStreamReader(is));
-    try {
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
       //Get the request line of HTTP message
       String requestLine = StringUtil.trim(br.readLine());
       String req;
@@ -122,13 +121,12 @@ public class HttpRequest implements Runnable {
       response.sendResponse(this.socket.getOutputStream());
     }
     finally {
-      br.close();
       socket.close();
     }
   }
 
   private static Map<String, String> getQueryMap(String query) throws MalformedQueryException {
-    Map<String, String> map = new HashMap<String, String>();
+    Map<String, String> map = new HashMap<>();
     try {
       int i = query.indexOf('?');
       if (i == -1) {

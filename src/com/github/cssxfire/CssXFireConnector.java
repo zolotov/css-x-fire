@@ -33,7 +33,7 @@ public class CssXFireConnector implements ApplicationComponent {
   private static final Logger LOG = Logger.getInstance(CssXFireConnector.class.getName());
 
   private SimpleWebServer webServer;
-  private Collection<IncomingChangesComponent> incomingChangesComponents = new ArrayList<IncomingChangesComponent>();
+  private Collection<IncomingChangesComponent> incomingChangesComponents = new ArrayList<>();
   private boolean initialized = false;
 
   public static CssXFireConnector getInstance() {
@@ -99,22 +99,14 @@ public class CssXFireConnector implements ApplicationComponent {
   public void processEvent(final FirebugEvent event) {
     // Dispatch the incoming event to every open project
     for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents) {
-      ApplicationManager.getApplication().invokeLater(new Runnable() {
-        public void run() {
-          incomingChangesComponent.handleEvent(event);
-        }
-      });
+      ApplicationManager.getApplication().invokeLater(() -> incomingChangesComponent.handleEvent(event));
     }
   }
 
   public void processCss(final FirebugChangesBean changesBean) {
     // Dispatch the incoming change to every open project
     for (final IncomingChangesComponent incomingChangesComponent : incomingChangesComponents) {
-      ApplicationManager.getApplication().invokeLater(new Runnable() {
-        public void run() {
-          incomingChangesComponent.processRule(changesBean);
-        }
-      });
+      ApplicationManager.getApplication().invokeLater(() -> incomingChangesComponent.processRule(changesBean));
     }
   }
 }

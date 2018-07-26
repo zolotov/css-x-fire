@@ -51,7 +51,7 @@ public class UrlReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
             return;
         }
 
-        List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
+        List<CssDeclarationPath> matches = new ArrayList<>();
         for (CssDeclarationPath candidate : candidates) {
             VirtualFile file = candidate.getFileNode().getVirtualFile();
             if (file != null && url.equals(file.getUrl())) {

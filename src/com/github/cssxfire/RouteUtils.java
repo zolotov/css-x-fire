@@ -34,7 +34,7 @@ public class RouteUtils {
      * operations but works only with the paths of the files.
      *
      * @param project  the project
-     * @param filePath the remote file path, e.g. the string returnd from {@link java.net.URL#getPath()}
+     * @param filePath the remote file path, e.g. the string returned from {@link java.net.URL#getPath()}
      * @return the mapped local file in given project, or <tt>null</tt> if no mapping can be detected
      */
     @Nullable

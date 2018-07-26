@@ -22,7 +22,7 @@ import com.intellij.psi.css.CssSelectorList;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getMixinProcessor(com.intellij.psi.PsiElement, String)}
+ * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getMixinProcessor(PsiElement, String)}
  * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie

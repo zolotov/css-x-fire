@@ -51,7 +51,7 @@ public class CurrentDocumentsReduceStrategy implements ReduceStrategy<CssDeclara
         }
 
         VirtualFile[] openFiles = FileEditorManager.getInstance(project).getOpenFiles();
-        List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
+        List<CssDeclarationPath> matches = new ArrayList<>();
         for (CssDeclarationPath candidate : candidates) {
             VirtualFile candidateFile = candidate.getFileNode().getVirtualFile();
             for (VirtualFile openFile : openFiles) {

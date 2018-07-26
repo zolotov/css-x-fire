@@ -19,7 +19,6 @@ package com.github.cssxfire;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.css.*;
-import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.TextOccurenceProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +31,7 @@ import java.util.List;
 public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
     private static final String DUMMY = "";
 
-    private final List<CssElement> selectors = new ArrayList<CssElement>();
+    private final List<CssElement> selectors = new ArrayList<>();
     @NotNull
     private String selector;
     @NotNull
@@ -85,48 +84,46 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
     private boolean canBeReference(@NotNull CssElement cssSelector) {
         final List<List<String>> selectorPaths = createSelectorParts(selector);
 
-        boolean complete = CssUtils.processParents(cssSelector, new PsiElementProcessor<PsiElement>() {
-            public boolean execute(@NotNull PsiElement element) {
-                if (element instanceof CssRuleset) {
-                    CssRuleset cssRuleset = (CssRuleset) element;
-                    CssSelectorList selectorList = cssRuleset.getSelectorList();
-                    if (selectorList == null) {
-                        return false; // abort processing
-                    }
-                    String selectorText = StringUtils.normalizeWhitespace(selectorList.getText());
-                    List<List<String>> comparePaths = createSelectorParts(selectorText);
+        boolean complete = CssUtils.processParents(cssSelector, element -> {
+            if (element instanceof CssRuleset) {
+                CssRuleset cssRuleset = (CssRuleset) element;
+                CssSelectorList selectorList = cssRuleset.getSelectorList();
+                if (selectorList == null) {
+                    return false; // abort processing
+                }
+                String selectorText = StringUtils.normalizeWhitespace(selectorList.getText());
+                List<List<String>> comparePaths = createSelectorParts(selectorText);
 
-                    for (List<String> comparePath : comparePaths) {
-                        int numToRemove = 0;
-                        for (List<String> selectorPath : selectorPaths) {
-                            if (endsWith(selectorPath, comparePath)) {
-                                numToRemove = comparePath.size();
-                                for (int i = 0; i < numToRemove; i++) {
-                                    pop(selectorPath);
-                                }
-                                selectorPath.add(DUMMY); // Add a dummy marker that won't match again
+                for (List<String> comparePath : comparePaths) {
+                    int numToRemove = 0;
+                    for (List<String> selectorPath : selectorPaths) {
+                        if (endsWith(selectorPath, comparePath)) {
+                            numToRemove = comparePath.size();
+                            for (int i = 0; i < numToRemove; i++) {
+                                pop(selectorPath);
                             }
-                        }
-                        for (int i = 0; i < numToRemove; i++) {
-                            pop(comparePath);
+                            selectorPath.add(DUMMY); // Add a dummy marker that won't match again
                         }
                     }
+                    for (int i = 0; i < numToRemove; i++) {
+                        pop(comparePath);
+                    }
+                }
 
-                    if (cleanupSelectorParts(comparePaths)) {
+                if (cleanupSelectorParts(comparePaths)) {
+                    return false;
+                }
+
+                for (List<String> selectorPath : selectorPaths) {
+                    String stack = pop(selectorPath);// Clear dummy markers
+                    if (StringUtil.isNotEmpty(stack)) {
+                        selectorPath.add(DUMMY);
                         return false;
                     }
-
-                    for (List<String> selectorPath : selectorPaths) {
-                        String stack = pop(selectorPath);// Clear dummy markers
-                        if (StringUtil.isNotEmpty(stack)) {
-                            selectorPath.add(DUMMY);
-                            return false;
-                        }
-                    }
-                    return true;
                 }
                 return true;
             }
+            return true;
         });
 
         // Check for loose ends in given selector and in code.
@@ -179,10 +176,10 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
     }
 
     private static List<List<String>> createSelectorParts(String s) {
-        List<List<String>> parts = new ArrayList<List<String>>();
+        List<List<String>> parts = new ArrayList<>();
         String[] selectorParts = s.split(",");
         for (String part : selectorParts) {
-            List<String> sub = new ArrayList<String>();
+            List<String> sub = new ArrayList<>();
             String[] subParts = part.split(" ");
             Collections.addAll(sub, subParts);
             parts.add(sub);
@@ -215,8 +212,8 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
      * @see #getBlocks()
      */
     @NotNull
-    public CssElement[] getResults() {
-        return selectors.toArray(new CssElement[selectors.size()]);
+    private CssElement[] getResults() {
+        return selectors.toArray(new CssElement[0]);
     }
 
     /**
@@ -227,7 +224,7 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
      */
     @NotNull
     public CssBlock[] getBlocks() {
-        final Collection<CssBlock> blocks = new ArrayList<CssBlock>();
+        final Collection<CssBlock> blocks = new ArrayList<>();
 
         for (CssElement result : getResults()) {
             CssRuleset ruleSet = PsiTreeUtil.getParentOfType(result, CssRuleset.class);
@@ -239,6 +236,6 @@ public class CssSelectorSearchProcessor implements TextOccurenceProcessor {
             }
         }
 
-        return blocks.toArray(new CssBlock[blocks.size()]);
+        return blocks.toArray(new CssBlock[0]);
     }
 }

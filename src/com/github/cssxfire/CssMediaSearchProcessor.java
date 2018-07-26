@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CssMediaSearchProcessor implements TextOccurenceProcessor {
-    private final Set<CssMediumList> mediaLists = new HashSet<CssMediumList>();
+    private final Set<CssMediumList> mediaLists = new HashSet<>();
     @NotNull
     private String media;
     @NotNull
@@ -47,7 +47,7 @@ public class CssMediaSearchProcessor implements TextOccurenceProcessor {
     }
 
 
-    public boolean execute(PsiElement element, int offsetInElement) {
+    public boolean execute(@NotNull PsiElement element, int offsetInElement) {
         CssMediumList mediumList = CssUtils.findMediumList(element);
         if (mediumList != null) {
             String text = mediumList.getText();
@@ -59,6 +59,6 @@ public class CssMediaSearchProcessor implements TextOccurenceProcessor {
     }
 
     public Set<CssMediumList> getMediaLists() {
-        return new HashSet<CssMediumList>(mediaLists);
+        return new HashSet<>(mediaLists);
     }
 }

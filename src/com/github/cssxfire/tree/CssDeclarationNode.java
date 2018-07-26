@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class CssDeclarationNode extends CssTreeNode implements Navigatable {
     private static final Logger LOG = Logger.getInstance(CssDeclarationNode.class);
@@ -171,7 +172,7 @@ public class CssDeclarationNode extends CssTreeNode implements Navigatable {
 
         CssDeclarationNode that = (CssDeclarationNode) o;
 
-        if (cssDeclaration != null ? !cssDeclaration.equals(that.cssDeclaration) : that.cssDeclaration != null) {
+        if (!Objects.equals(cssDeclaration, that.cssDeclaration)) {
             return false;
         }
 

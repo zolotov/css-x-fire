@@ -24,7 +24,7 @@ import java.net.ServerSocket;
 
 public class SimpleWebServer implements Runnable {
     private static final Logger LOG = Logger.getInstance(SimpleWebServer.class.getName());
-    public static final int DEFAULT_PORT = 6776;
+    private static final int DEFAULT_PORT = 6776;
     private ServerSocket listenSocket;
 
     public SimpleWebServer() throws IOException {

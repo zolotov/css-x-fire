@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.plugins.less.psi.LESSVariableDeclaration;
 
 /**
- * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(com.intellij.psi.PsiElement, String)}
+ * This class will only be loaded if the LESS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(PsiElement, String)}
  * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie

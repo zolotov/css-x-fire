@@ -50,7 +50,7 @@ public class FileReduceStrategy implements ReduceStrategy<CssDeclarationPath> {
             return;
         }
 
-        List<CssDeclarationPath> matches = new ArrayList<CssDeclarationPath>();
+        List<CssDeclarationPath> matches = new ArrayList<>();
         for (CssDeclarationPath candidate : candidates) {
             if (filename.equals(candidate.getFileNode().getFilename())) {
                 // filename matches candidate file

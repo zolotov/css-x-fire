@@ -25,7 +25,7 @@ import org.jetbrains.plugins.scss.psi.SCSSMixinDeclaration;
 import org.jetbrains.plugins.scss.psi.SassScssVariableDeclaration;
 
 /**
- * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(com.intellij.psi.PsiElement, String)}
+ * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getVariableProcessor(PsiElement, String)}
  * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie

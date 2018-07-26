@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
+import java.util.Objects;
 
 public class CssFileNode extends CssTreeNode implements Navigatable {
     private final PsiFile psiFile;
@@ -85,7 +86,7 @@ public class CssFileNode extends CssTreeNode implements Navigatable {
 
         CssFileNode fileNode = (CssFileNode) o;
 
-        if (psiFile != null ? !psiFile.equals(fileNode.psiFile) : fileNode.psiFile != null) {
+        if (!Objects.equals(psiFile, fileNode.psiFile)) {
             return false;
         }
 

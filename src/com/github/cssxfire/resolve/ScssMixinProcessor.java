@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.scss.psi.SCSSMixinDeclaration;
 
 /**
- * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getMixinProcessor(com.intellij.psi.PsiElement, String)}
+ * This class will only be loaded if the SASS plugin is active. See {@link CssPluginsFacade#getMixinProcessor(PsiElement, String)}
  * <br><br>
  * Created by IntelliJ IDEA.
  * User: Ronnie

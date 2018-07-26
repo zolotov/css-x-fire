@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RoutePerFileMappings {
-    private Map<VirtualFile, String> myMappings = new HashMap<VirtualFile, String>();
+    private Map<VirtualFile, String> myMappings = new HashMap<>();
 
     public Map<VirtualFile, String> getMappings() {
-        return new HashMap<VirtualFile, String>(myMappings);
+        return new HashMap<>(myMappings);
     }
 
     public void setMappings(Map<VirtualFile, String> mappings) {

@@ -25,7 +25,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ReduceStrategyManager {
@@ -40,7 +39,7 @@ public class ReduceStrategyManager {
      * @return a suitable {@link ReduceStrategy}
      */
     public static ReduceStrategy<CssDeclarationPath> getStrategy(@NotNull Project project, @NotNull FirebugChangesBean bean) {
-        final List<ReduceStrategy<CssDeclarationPath>> reduceChain = new ArrayList<ReduceStrategy<CssDeclarationPath>>();
+        final List<ReduceStrategy<CssDeclarationPath>> reduceChain = new ArrayList<>();
 
         if (CssXFireSettings.getInstance(project).isMediaReduce()) {
             // Reduce for @media is checked
@@ -62,20 +61,18 @@ public class ReduceStrategyManager {
             }
         }
 
-        return new ReduceStrategy<CssDeclarationPath>() {
-            public void reduce(@NotNull Collection<CssDeclarationPath> candidates) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Filtering " + candidates.size() + " candidates");
-                    for (CssDeclarationPath candidate : candidates) {
-                        LOG.debug("  Candidate: " + candidate);
-                    }
+        return candidates -> {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Filtering " + candidates.size() + " candidates");
+                for (CssDeclarationPath candidate : candidates) {
+                    LOG.debug("  Candidate: " + candidate);
                 }
-                for (ReduceStrategy<CssDeclarationPath> reduceStrategy : reduceChain) {
-                    reduceStrategy.reduce(candidates);
-                }
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Filtering done, remaining " + candidates.size() + " candidates");
-                }
+            }
+            for (ReduceStrategy<CssDeclarationPath> reduceStrategy : reduceChain) {
+                reduceStrategy.reduce(candidates);
+            }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Filtering done, remaining " + candidates.size() + " candidates");
             }
         };
     }

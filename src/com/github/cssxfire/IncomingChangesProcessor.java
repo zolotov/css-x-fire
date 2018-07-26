@@ -25,7 +25,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.css.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,7 +55,7 @@ public class IncomingChangesProcessor {
     }
 
     private Collection<CssDeclarationPath> getCandidates() {
-        final List<CssDeclarationPath> candidates = new ArrayList<CssDeclarationPath>();
+        final List<CssDeclarationPath> candidates = new ArrayList<>();
         // find possible media query targets with its own processor
         Set<CssMediumList> mediaCandidates = findCandidateMediaLists();
 
@@ -73,15 +72,13 @@ public class IncomingChangesProcessor {
         }
 
         for (CssBlock block : cssBlocks) {
-            final Ref<CssDeclaration> destination = new Ref<CssDeclaration>();
-            CssUtils.processCssDeclarations(block, new PsiElementProcessor<CssDeclaration>() {
-                public boolean execute(@NotNull CssDeclaration declaration) {
-                    if (changesBean.getProperty().equals(declaration.getPropertyName())) {
-                        destination.set(declaration);
-                        return false;
-                    }
-                    return true;
+            final Ref<CssDeclaration> destination = Ref.create();
+            CssUtils.processCssDeclarations(block, declaration -> {
+                if (changesBean.getProperty().equals(declaration.getPropertyName())) {
+                    destination.set(declaration);
+                    return false;
                 }
+                return true;
             });
             CssDeclaration existingDeclaration = destination.get();
             PsiFile file = block.getContainingFile().getOriginalFile();
@@ -188,7 +185,7 @@ public class IncomingChangesProcessor {
      */
     @NotNull
     private Set<CssMediumList> findCandidateMediaLists() {
-        final Set<CssMediumList> elements = new HashSet<CssMediumList>();
+        final Set<CssMediumList> elements = new HashSet<>();
         if (changesBean.getMedia().length() > 0) {
             CssMediaSearchProcessor mediaProcessor = SearchProcessorCache.getInstance(project).getMediaSearchProcessor(changesBean.getMedia());
             Set<CssMediumList> mediaLists = mediaProcessor.getMediaLists();
