@@ -16,7 +16,10 @@
 
 package com.github.cssxfire;
 
-import com.intellij.openapi.components.*;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -34,7 +37,6 @@ import java.util.List;
   name = "CssXFireSettings",
   storages = {
     @Storage("$PROJECT_FILE$"),
-    @Storage(value = "$PROJECT_CONFIG_DIR$/cssxfire.xml", scheme = StorageScheme.DIRECTORY_BASED)
   }
 )
 public class CssXFireSettings implements PersistentStateComponent<Element> {
